@@ -9,10 +9,12 @@ const Login = () => {
     },
     validationSchema: Yup.object({
       username: Yup.string()
+        .trim()
         .min(4, 'Must be 4 characters or more')
         .required('Required'),
       password: Yup.string()
-        .min(8, 'Must be 8 characters or more')
+        .trim()
+        .min(4, 'Must be 4 characters or more')
         .required('Required'),
     }),
     onSubmit: (values) => {
@@ -21,38 +23,57 @@ const Login = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <label htmlFor="username">
-        <input
-          id="username"
-          name="username"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.username}
-        />
-        User name
-      </label>
-      {formik.touched.username && formik.errors.username ? (
-        <span>{formik.errors.username}</span>
-      ) : null}
+    <form onSubmit={formik.handleSubmit} className="form d-flex flex-column align-items-center">
+      <div className="mb-3">
+        <label htmlFor="username" className="form-label">
+          User name
+          <input
+            id="username"
+            name="username"
+            type="text"
+            className={
+              `form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
+            }
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.username}
+          />
+        </label>
+        {formik.touched.username && formik.errors.username ? (
+          <div className="text-danger">{formik.errors.username}</div>
+        ) : null}
+      </div>
 
-      <label htmlFor="password">
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-        Password
-      </label>
-      {formik.touched.password && formik.errors.password ? (
-        <span>{formik.errors.password}</span>
-      ) : null}
+      <div className="mb-3">
+        <label htmlFor="password" className="form-label">
+          Password
+          <input
+            id="password"
+            name="password"
+            type="password"
+            className={
+              `form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
+            }
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
+        </label>
+        {formik.touched.password && formik.errors.password ? (
+          <div className="text-danger">{formik.errors.password}</div>
+        ) : null}
+      </div>
 
-      <button type="submit">Submit</button>
+      <button
+        type="submit"
+        className={
+          `btn ${Object.keys(formik.touched).length && Object.keys(formik.errors).length
+            ? 'btn-secondary disabled'
+            : 'btn-primary'}`
+          }
+      >
+        Submit
+      </button>
     </form>
   );
 };
