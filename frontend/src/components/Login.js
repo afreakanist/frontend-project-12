@@ -1,7 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-const Login = () => {
+const Login = ({ onLogin, error }) => {
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -18,7 +18,7 @@ const Login = () => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, null, 2));
+      onLogin(values);
     },
   });
 
@@ -64,10 +64,12 @@ const Login = () => {
         ) : null}
       </div>
 
+      { error && <div className="mb-3 text-danger">{error}</div>}
+
       <button
         type="submit"
         className={
-          `btn ${Object.keys(formik.touched).length && Object.keys(formik.errors).length
+          `btn ${error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
             ? 'btn-secondary disabled'
             : 'btn-primary'}`
           }
