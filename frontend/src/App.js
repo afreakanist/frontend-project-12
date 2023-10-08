@@ -2,16 +2,19 @@ import { useState, useEffect } from 'react';
 import {
   Routes, Route, Navigate, useNavigate, useLocation,
 } from 'react-router-dom';
-import CurrentUserContext from './contexts/CurrentUser';
+import { useSelector, useDispatch } from 'react-redux';
+
 import * as api from './utils/api';
+import { logIn, setCurrentUser } from './slices/userSlice';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
 
 const App = () => {
-  const [currentUser, setCurrentUser] = useState({});
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [requestError, setRequestError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,15 +44,13 @@ const App = () => {
   const checkToken = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
-      console.log('App | checkToken() token exists');
-      setIsLoggedIn(true);
+      const username = localStorage.getItem('username');
+      dispatch(logIn());
+      dispatch(setCurrentUser({ username }));
+    } else if (location.pathname === '/') {
+      navigate('/login');
     } else {
-      console.log('App | checkToken() no token');
-      if (location.pathname === '/') {
-        navigate('/login');
-      } else {
-        navigate(location.pathname);
-      }
+      navigate(location.pathname);
     }
   };
 
@@ -58,17 +59,18 @@ const App = () => {
   }, []); // runs once
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (user.isLoggedIn) {
       getChatData();
     }
-  }, [isLoggedIn]); // runs when isLoggedIn changes
+  }, [user.isLoggedIn]); // runs when user.isLoggedIn changes
 
   const handleLogin = ({ username, password }) => {
     api.login(username, password)
       .then((data) => {
         localStorage.setItem('jwt', data.token);
-        setIsLoggedIn(true);
-        setCurrentUser({ username });
+        localStorage.setItem('username', username);
+        dispatch(logIn());
+        dispatch(setCurrentUser({ username }));
         navigate('/');
         setRequestError('');
       })
@@ -76,20 +78,18 @@ const App = () => {
   };
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route
-          path="login"
-          element={
-            isLoggedIn
-              ? <Navigate to="/" replace />
-              : <Login onLogin={handleLogin} error={requestError} />
-          }
-        />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </CurrentUserContext.Provider>
+    <Routes>
+      <Route path="/" element={<Main />} />
+      <Route
+        path="login"
+        element={
+          user.isLoggedIn
+            ? <Navigate to="/" replace />
+            : <Login onLogin={handleLogin} error={requestError} />
+        }
+      />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
 
