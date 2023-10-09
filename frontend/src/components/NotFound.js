@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const NotFound = () => (
   <main className="main-container not-found">
@@ -7,9 +7,9 @@ const NotFound = () => (
         <h1 className="not-found__status">404</h1>
         <p className="not-found__message">Page not found</p>
       </div>
-      <Link to="/" className="not-found__link">
+      {/* <Link to="/" className="not-found__link">
         Go to main page
-      </Link>
+      </Link> */}
     </div>
   </main>
 );
