@@ -18,10 +18,6 @@ textarea {
   resize: none;
 }
 
-.form {
-  width: 300px;
-}
-
 .sidebar {
   background-color: #1e325c;
   width: 300px;
@@ -84,17 +80,28 @@ textarea {
   width: 100%;
 }
 
-.not-found {
+.main-container {
   display: flex;
   justify-content: center;
   flex-grow: 1;
+}
+
+.login__form {
+  width: 300px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.login__form-label {
+  width: 100%;
 }
 
 .not-found__wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 60px 0 ;
+  padding: 60px 0;
 }
 
 .not-found__error {

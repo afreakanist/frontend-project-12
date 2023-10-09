@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const NotFound = () => (
-  <main className="not-found">
+  <main className="main-container not-found">
     <div className="not-found__wrapper">
       <div className="not-found__error">
         <h1 className="not-found__status">404</h1>
