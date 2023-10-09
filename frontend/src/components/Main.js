@@ -24,7 +24,7 @@ const Main = () => {
       channelId: currentChannelId,
       text: messageText,
       author: username,
-      created: new Date(),
+      created: (new Date()).toISOString(), // ?
     }));
     setMessageText('');
   };
