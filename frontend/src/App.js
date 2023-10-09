@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as api from './utils/api';
 import { logIn, setCurrentUser } from './slices/userSlice';
+import { addChannel } from './slices/channelsSlice';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
@@ -33,8 +34,8 @@ const App = () => {
     if (token) {
       api.getData(token)
         .then((data) => {
-          console.log('App | getChatData() received chat data:', data);
-          navigate(location.pathname);
+          console.log('App | chat data:', data);
+          data.channels.forEach((channel) => dispatch(addChannel(channel)));
           setRequestError('');
         })
         .catch((err) => handleError(err));

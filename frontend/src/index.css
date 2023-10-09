@@ -21,4 +21,42 @@ body {
   width: 300px;
 }
 
+.sidebar {
+  background-color: #1e325c;
+  width: 300px;
+  height: 100%;
+  align-self: flex-start;
+  color: #fff;
+
+  .list-group {
+    background: none;
+    border-radius: 0;
+    border: none;
+
+    .list-group-item {
+      background: none;
+      border: none;
+    }
+
+    .list-group-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      cursor: pointer;
+    }
+
+    .list-group-item.active {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.sidebar__section-name {
+  margin: 8px 16px;
+}
+
+.sidebar__link {
+  text-decoration: none;
+  color: #fff;
+  display: flex;
+}
+
 @import '~bootstrap/dist/css/bootstrap';
