@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as api from './utils/api';
 import { logIn, setCurrentUser } from './slices/userSlice';
-import { addChannel } from './slices/channelsSlice';
+import { actions as channelsActions } from './slices/channelsSlice';
 import { actions as messagesActions } from './slices/messagesSlice';
 import Login from './components/Login';
 import Main from './components/Main';
@@ -35,7 +35,7 @@ const App = () => {
     if (token) {
       api.getData(token)
         .then((data) => {
-          data.channels.forEach((channel) => dispatch(addChannel(channel)));
+          data.channels.forEach((channel) => dispatch(channelsActions.addChannel(channel)));
           data.messages.forEach((channel) => dispatch(messagesActions.addMessage(channel)));
           setRequestError('');
         })
