@@ -20,7 +20,7 @@ textarea {
 
 .sidebar {
   background-color: #1e325c;
-  width: 300px;
+  flex: 0 0 256px;
   height: 100%;
   align-self: flex-start;
   color: #fff;
@@ -45,8 +45,12 @@ textarea {
   }
 }
 
+.sidebar__section-header {
+  padding: 8px 16px;
+}
+
 .sidebar__section-name {
-  margin: 8px 16px;
+  margin: 0;
 }
 
 .sidebar__link {

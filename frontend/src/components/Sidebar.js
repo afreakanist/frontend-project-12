@@ -1,7 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
+import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
+import { actions as modalActions } from '../slices/modalSlice';
 
 const Sidebar = () => {
   const { currentChannelId, channels } = useSelector((state) => state.channels);
@@ -12,9 +14,21 @@ const Sidebar = () => {
     dispatch(channelsActions.switchChannel(id));
   };
 
+  const handleShowModal = () => {
+    dispatch(modalActions.showModal({ title: 'Add new channel', action: 'new' }));
+  };
+
   return (
     <div className="sidebar">
-      <h2 className="sidebar__section-name">Channels</h2>
+      <div className="sidebar__section-header d-flex justify-content-between align-items-center">
+        <h2 className="sidebar__section-name">Channels</h2>
+        <Button
+          variant="outline-light"
+          onClick={handleShowModal}
+        >
+          Add
+        </Button>
+      </div>
       <ListGroup variant="flush">
         {channels.map((channel) => (
           <ListGroup.Item
