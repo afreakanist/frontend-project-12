@@ -27,12 +27,11 @@ textarea {
 
   .list-group {
     background: none;
-    border-radius: 0;
-    border: none;
 
     .list-group-item {
       background: none;
       border: none;
+      color: inherit;
     }
 
     .list-group-item:hover {

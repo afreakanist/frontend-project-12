@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
 
@@ -8,35 +8,28 @@ const Sidebar = () => {
 
   const dispatch = useDispatch();
 
-  const handleChannelSwitch = (event, id) => {
-    event.preventDefault(); // no location change
+  const handleChannelSwitch = (id) => {
     dispatch(channelsActions.switchChannel(id));
   };
 
   return (
     <div className="sidebar">
       <h2 className="sidebar__section-name">Channels</h2>
-      <ul className="list-group">
+      <ListGroup variant="flush">
         {channels.map((channel) => (
-          <li
-            className={
-              `list-group-item ${channel.id === currentChannelId ? 'active' : ''}`
-            }
-            key={`channel-${channel.id}`}
+          <ListGroup.Item
+            key={channel.id}
+            action
+            active={channel.id === currentChannelId}
+            onClick={() => handleChannelSwitch(channel.id)}
           >
-            <Link
-              to={channel.name}
-              onClick={(event) => handleChannelSwitch(event, channel.id)}
-              className="sidebar__link"
-            >
-              {channel.name}
-              {/* <span className="badge bg-primary rounded-pill">
-                {messages.filter(({ channelId }) => channelId === channel.id).length}
-              </span> */}
-            </Link>
-          </li>
+            {channel.name}
+            {/* <Badge pill bg="warning" text="dark">
+              TO DO: count __unread__ messages
+            </Badge> */}
+          </ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
     </div>
   );
 };
