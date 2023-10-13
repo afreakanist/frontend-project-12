@@ -37,7 +37,7 @@ const Sidebar = () => {
             active={channel.id === currentChannelId}
             onClick={() => handleChannelSwitch(channel.id)}
           >
-            {channel.name}
+            {`# ${channel.name}`}
             {/* <Badge pill bg="warning" text="dark">
               TO DO: count __unread__ messages
             </Badge> */}
