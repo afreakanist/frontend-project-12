@@ -16,6 +16,10 @@ socket.on('newChannel', (payload) => {
   dispatch(channelsActions.addChannel(payload));
 });
 
+socket.on('renameChannel', (payload) => {
+  dispatch(channelsActions.renameChannel(payload));
+});
+
 socket.on('removeChannel', (payload) => {
   dispatch(channelsActions.removeChannel(payload));
 });
@@ -33,7 +37,10 @@ export const sendMessage = (message) => new Promise((resolve, reject) => {
 export const handleChannel = ({ action, ...channel }) => new Promise((resolve, reject) => {
   socket.emit(`${action}Channel`, channel, (response) => {
     if (response.status === 'ok') {
-      return resolve(response.data);
+      if (response.data) {
+        dispatch(channelsActions.switchChannel(response.data.id));
+      }
+      return resolve();
     }
     return reject();
   });

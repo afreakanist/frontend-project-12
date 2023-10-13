@@ -6,18 +6,15 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { actions as modalActions } from '../slices/modalSlice';
-import { actions as channelsActions } from '../slices/channelsSlice';
 import { handleChannel } from '../utils/chatApi';
 
 const ModalBox = () => {
-  const { show, action, title } = useSelector((state) => state.modal.modal);
+  const { show, action, data } = useSelector((state) => state.modal.modal);
   const channelsNames = useSelector((state) => state.channels.channels).map((c) => c.name);
   const dispatch = useDispatch();
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
-    /* eslint-disable-next-line */
-    formik.handleReset();
   };
 
   const formik = useFormik({
@@ -32,10 +29,10 @@ const ModalBox = () => {
         .notOneOf(channelsNames, 'Channel name must be unique!'),
     }),
     onSubmit: ({ name }) => {
-      handleChannel({ action, name })
-        .then(({ id }) => {
+      handleChannel({ action, ...data, name })
+        .then(() => {
           handleCloseModal();
-          if (id) dispatch(channelsActions.switchChannel(id));
+          formik.handleReset();
         })
         .catch((err) => console.error(err));
     },
@@ -44,7 +41,7 @@ const ModalBox = () => {
   return (
     <Modal show={show} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{title}</Modal.Title>
+        <Modal.Title>{`${action} channel`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit} id="channel-form">

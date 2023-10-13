@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import { actions as channelsActions } from '../slices/channelsSlice';
@@ -14,8 +16,8 @@ const Sidebar = () => {
     dispatch(channelsActions.switchChannel(id));
   };
 
-  const handleShowModal = () => {
-    dispatch(modalActions.showModal({ title: 'Add new channel', action: 'new' }));
+  const handleShowModal = (action, data) => {
+    dispatch(modalActions.showModal({ action, data }));
   };
 
   return (
@@ -24,23 +26,37 @@ const Sidebar = () => {
         <h2 className="sidebar__section-name">Channels</h2>
         <Button
           variant="outline-light"
-          onClick={handleShowModal}
+          onClick={() => handleShowModal('new')}
         >
           Add
         </Button>
       </div>
-      <ListGroup variant="flush">
+      <ListGroup variant="flush" as="ul">
         {channels.map((channel) => (
           <ListGroup.Item
             key={channel.id}
+            as="li"
             action
             active={channel.id === currentChannelId}
             onClick={() => handleChannelSwitch(channel.id)}
+            className="bg-transparent border-0"
           >
-            {`# ${channel.name}`}
-            {/* <Badge pill bg="warning" text="dark">
-              TO DO: count __unread__ messages
-            </Badge> */}
+            <Dropdown as={ButtonGroup} className="d-flex">
+              <Button className="text-start text-truncate rounded-0 bg-transparent border-0">{`# ${channel.name}`}</Button>
+
+              {channel.removable && (
+              <>
+                <Dropdown.Toggle split id={`channel-${channel.id}-dropdown-split`} className="flex-grow-0 bg-transparent border-0 rounded-0" />
+
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleShowModal('rename', { id: channel.id, name: channel.name })}>Rename</Dropdown.Item>
+                  {/* <Dropdown.Item onClick={() => handleShowModal('remove')}>
+                    Remove
+                  </Dropdown.Item> */}
+                </Dropdown.Menu>
+              </>
+              )}
+            </Dropdown>
           </ListGroup.Item>
         ))}
       </ListGroup>

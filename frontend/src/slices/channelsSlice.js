@@ -16,6 +16,10 @@ const channelsSlice = createSlice({
     addChannel: (state, action) => {
       state.channels.push(action.payload);
     },
+    renameChannel: (state, action) => {
+      const targetIdx = state.channels.findIndex((c) => c.id === action.payload.id);
+      state.channels.splice(targetIdx, 1, action.payload);
+    },
     removeChannel: (state, action) => {
       state.channels = state.channels.filter((c) => c.id === action.payload.id);
     },
