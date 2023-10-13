@@ -34,9 +34,9 @@ const App = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
       api.getData(token)
-        .then((data) => {
-          data.channels.forEach((channel) => dispatch(channelsActions.addChannel(channel)));
-          data.messages.forEach((channel) => dispatch(messagesActions.addMessage(channel)));
+        .then(({ channels, messages }) => {
+          dispatch(channelsActions.setChannels(channels));
+          dispatch(messagesActions.setMessages(messages));
           setRequestError('');
         })
         .catch((err) => handleError(err));

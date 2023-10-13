@@ -33,7 +33,7 @@ export const sendMessage = (message) => new Promise((resolve, reject) => {
 export const handleChannel = ({ action, ...channel }) => new Promise((resolve, reject) => {
   socket.emit(`${action}Channel`, channel, (response) => {
     if (response.status === 'ok') {
-      return resolve();
+      return resolve(response.data);
     }
     return reject();
   });
