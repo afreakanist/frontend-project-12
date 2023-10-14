@@ -34,7 +34,6 @@ const ModalBox = () => {
               return ctx.createError({ message: 'Nothing seems to change. Click "Cancel" if you changed your mind' });
             }
             if (channelsNames.includes(value)) {
-              console.log(this);
               return ctx.createError({ message: 'Channel name must be unique!' });
             }
             return true;
