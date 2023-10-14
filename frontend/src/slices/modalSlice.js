@@ -17,7 +17,7 @@ const modalSlice = createSlice({
       state.modal = { ...payload, show: true };
     },
     closeModal: (state) => {
-      state.modal.show = false;
+      state.modal = initialState.modal;
     },
   },
 });

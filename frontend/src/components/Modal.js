@@ -18,15 +18,28 @@ const ModalBox = () => {
   };
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      name: '',
+      name: data?.name || '',
     },
     validationSchema: Yup.object({
       name: Yup.string()
         .trim()
         .min(4, 'Must be 4 characters or more')
         .required('Required')
-        .notOneOf(channelsNames, 'Channel name must be unique!'),
+        .test({
+          name: 'custom-check',
+          test(value, ctx) {
+            if (action === 'rename' && value === data?.name) {
+              return ctx.createError({ message: 'Nothing seems to change. Click "Cancel" if you changed your mind' });
+            }
+            if (channelsNames.includes(value)) {
+              console.log(this);
+              return ctx.createError({ message: 'Channel name must be unique!' });
+            }
+            return true;
+          },
+        }),
     }),
     onSubmit: ({ name }) => {
       handleChannel({ action, ...data, name })
@@ -54,17 +67,20 @@ const ModalBox = () => {
               onBlur={formik.handleBlur}
               value={formik.values.name}
             />
-            <Form.Text className="text-danger">
-              {formik.touched.name && formik.errors.name && formik.errors.name}
-            </Form.Text>
+            {formik.errors.name
+              ? <Form.Text className="text-danger">{formik.errors.name}</Form.Text>
+              : null}
           </Form.Group>
         </Form>
       </Modal.Body>
       <Modal.Footer>
+        <Button variant="secondary" onClick={handleCloseModal}>
+          Cancel
+        </Button>
         <Button
           type="submit"
           form="channel-form"
-          disabled={formik.touched.name && formik.errors.name}
+          disabled={formik.errors.name}
         >
           OK
         </Button>
