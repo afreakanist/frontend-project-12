@@ -45,12 +45,3 @@ export const handleChannel = ({ action, ...channel }) => new Promise((resolve, r
     return reject();
   });
 });
-
-export const removeChannel = (channel) => new Promise((resolve, reject) => {
-  socket.emit('removeChannel', channel, (response) => {
-    if (response.status === 'ok') {
-      return resolve();
-    }
-    return reject();
-  });
-});
