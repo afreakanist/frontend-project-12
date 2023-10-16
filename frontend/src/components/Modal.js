@@ -1,16 +1,19 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Spinner from 'react-bootstrap/Spinner';
+
 import { actions as modalActions } from '../slices/modalSlice';
 import { handleChannel } from '../utils/chatApi';
 
 const ModalBox = () => {
   const { show, action, data } = useSelector((state) => state.modal.modal);
   const channelsNames = useSelector((state) => state.channels.channels).map((c) => c.name);
+  const [isPending, setIsPending] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -18,9 +21,14 @@ const ModalBox = () => {
     dispatch(modalActions.closeModal());
   };
 
-  const handleChannelRemoving = () => {
-    handleChannel({ action, ...data });
-    handleCloseModal();
+  const handleAcceptBtn = ({ name }) => {
+    setIsPending(true);
+    handleChannel({ action, ...data, name })
+      .then(() => {
+        handleCloseModal();
+      })
+      .catch((err) => console.error(err))
+      .finally(() => setIsPending(false));
   };
 
   const formik = useFormik({
@@ -46,16 +54,22 @@ const ModalBox = () => {
           },
         }),
     }),
-    onSubmit: ({ name }) => {
-      handleChannel({ action, ...data, name })
-        .then(() => {
-          handleCloseModal();
-          formik.handleReset();
-        })
-        .catch((err) => console.error(err));
-    },
+    onSubmit: (values) => handleAcceptBtn(values),
   });
 
+  const buildBtnAttrs = () => (action === 'remove'
+    ? {
+      variant: 'danger',
+      onClick: handleAcceptBtn,
+      disabled: isPending,
+    }
+    : {
+      type: 'submit',
+      form: 'channel-form',
+      disabled: formik.errors.name || isPending,
+    });
+
+  /* eslint-disable react/jsx-props-no-spreading */
   return (
     <Modal show={show} onHide={handleCloseModal}>
       <Modal.Header closeButton>
@@ -86,17 +100,19 @@ const ModalBox = () => {
         <Button variant="secondary" onClick={handleCloseModal}>
           Cancel
         </Button>
-        {action === 'remove'
-          ? <Button variant="danger" onClick={handleChannelRemoving}>Remove</Button>
-          : (
-            <Button
-              type="submit"
-              form="channel-form"
-              disabled={formik.errors.name}
-            >
-              OK
-            </Button>
-          )}
+        <Button
+          {...buildBtnAttrs()}
+        >
+          {isPending ? (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+            />
+          ) : 'OK'}
+        </Button>
       </Modal.Footer>
     </Modal>
   );

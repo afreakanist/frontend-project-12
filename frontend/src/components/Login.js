@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Spinner from 'react-bootstrap/Spinner';
 
-const Login = ({ onLogin, error }) => {
+const Login = ({ onLogin, error, setError }) => {
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -18,9 +19,14 @@ const Login = ({ onLogin, error }) => {
         .required('Required'),
     }),
     onSubmit: (values) => {
-      onLogin(values);
+      onLogin(values).finally(() => formik.setSubmitting(false));
     },
   });
+
+  const handleChange = (event) => {
+    setError('');
+    formik.handleChange(event);
+  };
 
   return (
     <main className="main-container login">
@@ -35,7 +41,7 @@ const Login = ({ onLogin, error }) => {
               className={
                 `form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
               }
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.username}
             />
@@ -55,7 +61,7 @@ const Login = ({ onLogin, error }) => {
               className={
                 `form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
               }
-              onChange={formik.handleChange}
+              onChange={handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.password}
             />
@@ -71,11 +77,22 @@ const Login = ({ onLogin, error }) => {
           type="submit"
           className={
             `btn ${error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
-              ? 'btn-secondary disabled'
+              ? 'btn-secondary'
               : 'btn-primary'}`
             }
+          disabled={!!error || Object.keys(formik.errors).length}
         >
-          Submit
+          {formik.isSubmitting
+            ? (
+              <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+            )
+            : 'Submit'}
         </button>
       </form>
     </main>

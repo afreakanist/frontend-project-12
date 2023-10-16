@@ -66,18 +66,16 @@ const App = () => {
     }
   }, [user.isLoggedIn]); // runs when user.isLoggedIn changes
 
-  const handleLogin = ({ username, password }) => {
-    api.login(username, password)
-      .then((data) => {
-        localStorage.setItem('jwt', data.token);
-        localStorage.setItem('username', username);
-        dispatch(logIn());
-        dispatch(setCurrentUser({ username }));
-        navigate('/');
-        setRequestError('');
-      })
-      .catch((err) => handleError(err));
-  };
+  const handleLogin = ({ username, password }) => api.login(username, password)
+    .then((data) => {
+      localStorage.setItem('jwt', data.token);
+      localStorage.setItem('username', username);
+      dispatch(logIn());
+      dispatch(setCurrentUser({ username }));
+      navigate('/');
+      setRequestError('');
+    })
+    .catch((err) => handleError(err));
 
   return (
     <Routes>
@@ -87,7 +85,7 @@ const App = () => {
         element={
           user.isLoggedIn
             ? <Navigate to="/" replace />
-            : <Login onLogin={handleLogin} error={requestError} />
+            : <Login onLogin={handleLogin} error={requestError} setError={setRequestError} />
         }
       />
       <Route path="*" element={<NotFound />} />
