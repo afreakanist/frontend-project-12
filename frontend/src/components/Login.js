@@ -1,5 +1,7 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 
 const Login = ({ onLogin, error, setError }) => {
@@ -30,56 +32,57 @@ const Login = ({ onLogin, error, setError }) => {
 
   return (
     <main className="main-container login">
-      <form onSubmit={formik.handleSubmit} className="form login__form d-flex flex-column align-items-center">
-        <div className="mb-3 input-group">
-          <label htmlFor="username" className="form-label login__form-label">
-            User name
-            <input
-              id="username"
-              name="username"
-              type="text"
-              className={
-                `form-control ${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
-              }
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.username}
-            />
-          </label>
+      <Form onSubmit={formik.handleSubmit} className="login__form d-flex flex-column justify-content-center">
+        <Form.Group className="mb-3 w-100">
+          <Form.Label htmlFor="username">
+            Username
+          </Form.Label>
+          <Form.Control
+            id="username"
+            name="username"
+            type="text"
+            className={
+              `${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
+            }
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.username}
+          />
           {formik.touched.username && formik.errors.username ? (
-            <div className="text-danger">{formik.errors.username}</div>
+            <Form.Text className="text-danger">{formik.errors.username}</Form.Text>
           ) : null}
-        </div>
+        </Form.Group>
 
-        <div className="mb-3 input-group">
-          <label htmlFor="password" className="form-label login__form-label">
+        <Form.Group className="mb-3 w-100">
+          <Form.Label htmlFor="password">
             Password
-            <input
-              id="password"
-              name="password"
-              type="password"
-              className={
-                `form-control ${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
-              }
-              onChange={handleChange}
-              onBlur={formik.handleBlur}
-              value={formik.values.password}
-            />
-          </label>
+          </Form.Label>
+          <Form.Control
+            id="password"
+            name="password"
+            type="text"
+            className={
+              `${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
+            }
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.password}
+          />
           {formik.touched.password && formik.errors.password ? (
-            <div className="text-danger">{formik.errors.password}</div>
+            <Form.Text className="text-danger">{formik.errors.password}</Form.Text>
           ) : null}
-        </div>
+        </Form.Group>
 
         { error && <div className="mb-3 text-danger">{error}</div>}
 
-        <button
+        <Button
           type="submit"
-          className={
-            `btn ${error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
-              ? 'btn-secondary'
-              : 'btn-primary'}`
-            }
+          className="w-100"
+          variant={
+            error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
+              ? 'secondary'
+              : 'primary'
+          }
           disabled={!!error || Object.keys(formik.errors).length}
         >
           {formik.isSubmitting
@@ -93,8 +96,8 @@ const Login = ({ onLogin, error, setError }) => {
               />
             )
             : 'Submit'}
-        </button>
-      </form>
+        </Button>
+      </Form>
     </main>
   );
 };

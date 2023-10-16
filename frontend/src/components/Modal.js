@@ -88,6 +88,7 @@ const ModalBox = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.name}
+                  className={formik.errors.name ? 'is-invalid' : ''}
                 />
                 {formik.errors.name
                   ? <Form.Text className="text-danger">{formik.errors.name}</Form.Text>

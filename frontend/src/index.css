@@ -74,13 +74,6 @@ textarea {
 
 .login__form {
   width: 300px;
-  flex-direction: column;
-  justify-content: center;
-  padding: 60px 0;
-}
-
-.login__form-label {
-  width: 100%;
 }
 
 .not-found__wrapper {
