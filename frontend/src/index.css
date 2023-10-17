@@ -61,9 +61,7 @@ textarea {
 }
 
 .message-box {
-  display: flex;
   padding: 48px 16px;
-  width: 100%;
 }
 
 .main-container {

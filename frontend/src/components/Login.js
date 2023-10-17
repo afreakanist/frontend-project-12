@@ -32,7 +32,7 @@ const Login = ({ onLogin, error, setError }) => {
 
   return (
     <main className="main-container login">
-      <Form onSubmit={formik.handleSubmit} className="login__form d-flex flex-column justify-content-center">
+      <Form onSubmit={formik.handleSubmit} className="login__form d-flex flex-column justify-content-center align-items-center">
         <Form.Group className="mb-3 w-100">
           <Form.Label htmlFor="username">
             Username
