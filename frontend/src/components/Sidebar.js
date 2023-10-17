@@ -31,7 +31,7 @@ const Sidebar = () => {
           Add
         </Button>
       </div>
-      <ListGroup variant="flush" as="ul">
+      <ListGroup variant="flush" as="ul" className="channels-list overflow-hidden-scroll">
         {channels.map((channel) => (
           <ListGroup.Item
             key={channel.id}

@@ -6,10 +6,10 @@ const ChannelView = () => {
   const { messages } = useSelector((state) => state.messages);
 
   return (
-    <div className="channel-view">
+    <div className="channel-view overflow-hidden-scroll h-100 d-flex flex-column justify-content-end">
       {messages?.filter((message) => message.channelId === currentChannelId).length > 0
         ? (
-          <ul className="list-group">
+          <ul className="list-group overflow-hidden-scroll">
             {messages
               .filter((message) => message.channelId === currentChannelId)
               .map((message) => (
@@ -25,7 +25,7 @@ const ChannelView = () => {
               ))}
           </ul>
         )
-        : <div className="empty">No messages here yet</div>}
+        : <div className="w-100 text-center">No messages here yet</div>}
       <MessageForm />
     </div>
   );

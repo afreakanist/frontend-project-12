@@ -26,6 +26,8 @@ const ModalBox = () => {
     handleChannel({ action, ...data, name })
       .then(() => {
         handleCloseModal();
+        //  eslint-disable-next-line
+        formik.handleReset();
       })
       .catch((err) => console.error(err))
       .finally(() => setIsPending(false));
