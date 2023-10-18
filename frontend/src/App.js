@@ -2,22 +2,21 @@ import { useState, useEffect } from 'react';
 import {
   Routes, Route, Navigate, useNavigate, useLocation,
 } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import * as api from './utils/api';
-import { logIn, setCurrentUser } from './slices/userSlice';
 import { actions as channelsActions } from './slices/channelsSlice';
 import { actions as messagesActions } from './slices/messagesSlice';
+import CurrentUserCtx from './contexts/CurrentUserCtx';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
 import Signup from './components/Signup';
 
 const App = () => {
-  const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
+  const [currentUser, setCurrentUser] = useState({});
   const [requestError, setRequestError] = useState('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -48,8 +47,7 @@ const App = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
       const username = localStorage.getItem('username');
-      dispatch(logIn());
-      dispatch(setCurrentUser({ username }));
+      setCurrentUser({ username, isLoggedIn: true });
     } else if (location.pathname === '/') {
       navigate('/login');
     } else {
@@ -62,17 +60,16 @@ const App = () => {
   }, []); // runs once
 
   useEffect(() => {
-    if (user.isLoggedIn) {
+    if (currentUser.isLoggedIn) {
       getChatData();
     }
-  }, [user.isLoggedIn]); // runs when user.isLoggedIn changes
+  }, [currentUser.isLoggedIn]); // runs when currentUser.isLoggedIn changes
 
   const handleLogin = ({ username, password }) => api.login(username, password)
     .then((data) => {
       localStorage.setItem('jwt', data.token);
       localStorage.setItem('username', username);
-      dispatch(logIn());
-      dispatch(setCurrentUser({ username }));
+      setCurrentUser({ username, isLoggedIn: true });
       navigate('/');
       setRequestError('');
     })
@@ -82,27 +79,28 @@ const App = () => {
     .then((data) => {
       localStorage.setItem('jwt', data.token);
       localStorage.setItem('username', username);
-      dispatch(logIn());
-      dispatch(setCurrentUser({ username }));
+      setCurrentUser({ username, isLoggedIn: true });
       navigate('/');
       setRequestError('');
     })
     .catch((err) => handleError(err));
 
   return (
-    <Routes>
-      <Route path="/" element={<Main />} />
-      <Route
-        path="login"
-        element={
-          user.isLoggedIn
-            ? <Navigate to="/" replace />
-            : <Login onLogin={handleLogin} error={requestError} setError={setRequestError} />
-        }
-      />
-      <Route path="signup" element={<Signup onSignup={handleSignup} error={requestError} setError={setRequestError} />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <CurrentUserCtx.Provider value={currentUser}>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route
+          path="login"
+          element={
+            currentUser.isLoggedIn
+              ? <Navigate to="/" replace />
+              : <Login onLogin={handleLogin} error={requestError} setError={setRequestError} />
+          }
+        />
+        <Route path="signup" element={<Signup onSignup={handleSignup} error={requestError} setError={setRequestError} />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </CurrentUserCtx.Provider>
   );
 };
 

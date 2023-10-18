@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -6,10 +7,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { sendMessage } from '../utils/chatApi';
+import CurrentUserCtx from '../contexts/CurrentUserCtx';
 
 const MessageForm = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
-  const { username } = useSelector((state) => state.user);
+  const { username } = useContext(CurrentUserCtx);
 
   const formik = useFormik({
     validateOnMount: true,
