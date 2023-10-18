@@ -19,7 +19,7 @@ const Login = ({ onLogin, error, setError }) => {
         .required('This field is required'),
       password: Yup.string()
         .trim()
-        .min(6, 'Password min length is 6 characters')
+        .min(5, 'Password min length is 5 characters')
         .required('This field is required'),
     }),
     onSubmit: (values) => {

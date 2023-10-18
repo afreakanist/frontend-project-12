@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
-  Routes, Route, Navigate, useNavigate, useLocation,
+  Navigate, Routes, Route, useNavigate, useLocation,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
@@ -11,6 +11,7 @@ import CurrentUserCtx from './contexts/CurrentUserCtx';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
+import ProtectedRoute from './components/ProtectedRoute';
 import Signup from './components/Signup';
 
 const App = () => {
@@ -48,9 +49,6 @@ const App = () => {
     if (token) {
       const username = localStorage.getItem('username');
       setCurrentUser({ username, isLoggedIn: true });
-    } else if (location.pathname === '/') {
-      navigate('/login');
-    } else {
       navigate(location.pathname);
     }
   };
@@ -88,7 +86,7 @@ const App = () => {
   return (
     <CurrentUserCtx.Provider value={currentUser}>
       <Routes>
-        <Route path="/" element={<Main />} />
+        <Route path="/" element={<ProtectedRoute><Main /></ProtectedRoute>} />
         <Route
           path="login"
           element={
