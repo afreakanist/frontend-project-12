@@ -8,6 +8,7 @@ import * as api from './utils/api';
 import { actions as channelsActions } from './slices/channelsSlice';
 import { actions as messagesActions } from './slices/messagesSlice';
 import CurrentUserCtx from './contexts/CurrentUserCtx';
+import Header from './components/Header';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
@@ -83,8 +84,15 @@ const App = () => {
     })
     .catch((err) => handleError(err));
 
+  const handleLogout = () => {
+    setCurrentUser({});
+    localStorage.removeItem('jwt');
+    localStorage.removeItem('username');
+  };
+
   return (
     <CurrentUserCtx.Provider value={currentUser}>
+      <Header onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<ProtectedRoute><Main /></ProtectedRoute>} />
         <Route
