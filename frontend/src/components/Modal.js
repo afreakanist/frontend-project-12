@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -17,17 +17,24 @@ const ModalBox = () => {
 
   const dispatch = useDispatch();
 
+  const inputElem = useRef(null);
+
+  useEffect(() => {
+    if (inputElem.current) {
+      inputElem.current.focus();
+    }
+  }, [show]);
+
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
   };
 
-  const handleAcceptBtn = ({ name }) => {
+  const handleAcceptBtn = ({ name }, handleReset = () => {}) => {
     setIsPending(true);
     handleChannel({ action, ...data, name })
       .then(() => {
         handleCloseModal();
-        //  eslint-disable-next-line
-        formik.handleReset();
+        handleReset();
       })
       .catch((err) => console.error(err))
       .finally(() => setIsPending(false));
@@ -35,6 +42,7 @@ const ModalBox = () => {
 
   const formik = useFormik({
     enableReinitialize: true,
+    validateOnBlur: false,
     initialValues: {
       name: data?.name || '',
     },
@@ -56,7 +64,7 @@ const ModalBox = () => {
           },
         }),
     }),
-    onSubmit: (values) => handleAcceptBtn(values),
+    onSubmit: (values) => handleAcceptBtn(values, formik.handleReset),
   });
 
   const buildBtnAttrs = () => (action === 'remove'
@@ -84,6 +92,7 @@ const ModalBox = () => {
             <Form onSubmit={formik.handleSubmit} id="channel-form">
               <Form.Group className="mb-3" controlId="name">
                 <Form.Control
+                  ref={inputElem}
                   type="text"
                   placeholder="Write new channel name here..."
                   autoComplete="off"

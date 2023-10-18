@@ -47,6 +47,7 @@ const Login = ({ onLogin, error, setError }) => {
             onChange={handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.username}
+            autoFocus
           />
           {formik.touched.username && formik.errors.username ? (
             <Form.Text className="text-danger">{formik.errors.username}</Form.Text>
@@ -60,7 +61,7 @@ const Login = ({ onLogin, error, setError }) => {
           <Form.Control
             id="password"
             name="password"
-            type="text"
+            type="password"
             className={
               `${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
             }
