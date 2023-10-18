@@ -5,11 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 
-const Login = ({ onLogin, error, setError }) => {
+const Signup = ({ onSignup, error, setError }) => {
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
+      passwordConfirmation: '',
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -21,9 +22,13 @@ const Login = ({ onLogin, error, setError }) => {
         .trim()
         .min(6, 'Password min length is 6 characters')
         .required('This field is required'),
+      passwordConfirmation: Yup.string()
+        .trim()
+        .required('Please confirm your password')
+        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
     }),
     onSubmit: (values) => {
-      onLogin(values).finally(() => formik.setSubmitting(false));
+      onSignup(values).finally(() => formik.setSubmitting(false));
     },
   });
 
@@ -76,6 +81,26 @@ const Login = ({ onLogin, error, setError }) => {
           ) : null}
         </Form.Group>
 
+        <Form.Group className="mb-3 w-100">
+          <Form.Label htmlFor="passwordConfirmation">
+            Confirm password
+          </Form.Label>
+          <Form.Control
+            id="passwordConfirmation"
+            name="passwordConfirmation"
+            type="password"
+            className={
+              `${formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? 'is-invalid' : ''}`
+            }
+            onChange={handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.passwordConfirmation}
+          />
+          {formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? (
+            <Form.Text className="text-danger">{formik.errors.passwordConfirmation}</Form.Text>
+          ) : null}
+        </Form.Group>
+
         { error && <div className="mb-3 text-danger">{error}</div>}
 
         <Button
@@ -101,9 +126,9 @@ const Login = ({ onLogin, error, setError }) => {
             : 'Submit'}
         </Button>
       </Form>
-      <Link to="/signup" className="mt-3">Sign up</Link>
+      <Link to="/login" className="mt-3">Log in</Link>
     </main>
   );
 };
 
-export default Login;
+export default Signup;

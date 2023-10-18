@@ -11,6 +11,7 @@ import { actions as messagesActions } from './slices/messagesSlice';
 import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
+import Signup from './components/Signup';
 
 const App = () => {
   const user = useSelector((state) => state.user);
@@ -77,6 +78,17 @@ const App = () => {
     })
     .catch((err) => handleError(err));
 
+  const handleSignup = ({ username, password }) => api.signup(username, password)
+    .then((data) => {
+      localStorage.setItem('jwt', data.token);
+      localStorage.setItem('username', username);
+      dispatch(logIn());
+      dispatch(setCurrentUser({ username }));
+      navigate('/');
+      setRequestError('');
+    })
+    .catch((err) => handleError(err));
+
   return (
     <Routes>
       <Route path="/" element={<Main />} />
@@ -88,6 +100,7 @@ const App = () => {
             : <Login onLogin={handleLogin} error={requestError} setError={setRequestError} />
         }
       />
+      <Route path="signup" element={<Signup onSignup={handleSignup} error={requestError} setError={setRequestError} />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

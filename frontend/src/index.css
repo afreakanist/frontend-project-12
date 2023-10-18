@@ -14,6 +14,7 @@ body {
   --sidebar-width: 256px;
   --section-max-height: 100vh;
   --section-name-height: 55px;
+  --auth-form-width: 300px;
 }
 
 #root {
@@ -96,14 +97,8 @@ textarea {
   padding: 48px 16px;
 }
 
-.main-container {
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.login__form {
-  width: 300px;
+.auth-form {
+  width: var(--auth-form-width);
 }
 
 .not-found__wrapper {
