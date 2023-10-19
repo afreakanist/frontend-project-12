@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
@@ -15,6 +16,7 @@ const ModalBox = () => {
   const channelsNames = useSelector((state) => state.channels.channels).map((c) => c.name);
   const [isPending, setIsPending] = useState(false);
 
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const inputElem = useRef(null);
@@ -49,16 +51,17 @@ const ModalBox = () => {
     validationSchema: Yup.object({
       name: Yup.string()
         .trim()
-        .min(4, 'Must be 4 characters or more')
-        .required('Required')
+        .min(4, t('channelsForm.error.nameMin'))
+        .max(62, t('channelsForm.error.nameMax'))
+        .required(t('form.error.required'))
         .test({
           name: 'custom-check',
           test(value, ctx) {
             if (action === 'rename' && value === data?.name) {
-              return ctx.createError({ message: 'Nothing seems to change. Click "Cancel" if you changed your mind' });
+              return ctx.createError({ message: t('channelsForm.error.noChange') });
             }
             if (channelsNames.includes(value)) {
-              return ctx.createError({ message: 'Channel name must be unique!' });
+              return ctx.createError({ message: t('channelsForm.error.conflict') });
             }
             return true;
           },
@@ -83,18 +86,18 @@ const ModalBox = () => {
   return (
     <Modal show={show} onHide={handleCloseModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{`${action} channel`}</Modal.Title>
+        <Modal.Title>{t(`channels.${action}`)}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {action === 'remove'
-          ? <p className="lead">Are you sure?</p>
+          ? <p className="lead">{t('channelsForm.confirmation')}</p>
           : (
             <Form onSubmit={formik.handleSubmit} id="channel-form">
               <Form.Group className="mb-3" controlId="name">
                 <Form.Control
                   ref={inputElem}
                   type="text"
-                  placeholder="Write new channel name here..."
+                  placeholder={t('channelsForm.placeholder.name')}
                   autoComplete="off"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
@@ -110,7 +113,7 @@ const ModalBox = () => {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCloseModal}>
-          Cancel
+          {t('modal.cancelBtn')}
         </Button>
         <Button
           {...buildBtnAttrs()}
@@ -123,7 +126,7 @@ const ModalBox = () => {
               role="status"
               aria-hidden="true"
             />
-          ) : 'OK'}
+          ) : t('modal.acceptBtn')}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -1,9 +1,12 @@
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import MessageForm from './MessageForm';
 
 const ChannelView = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
   const { messages } = useSelector((state) => state.messages);
+
+  const { t } = useTranslation();
 
   return (
     <div className="channel-view overflow-hidden-scroll h-100 d-flex flex-column justify-content-end">
@@ -25,7 +28,7 @@ const ChannelView = () => {
               ))}
           </ul>
         )
-        : <div className="w-100 text-center">No messages here yet</div>}
+        : <div className="w-100 text-center">{t('messages.noMessages')}</div>}
       <MessageForm />
     </div>
   );

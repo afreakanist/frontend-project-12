@@ -1,11 +1,14 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 
 const Signup = ({ onSignup, error, setError }) => {
+  const { t } = useTranslation();
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -15,17 +18,17 @@ const Signup = ({ onSignup, error, setError }) => {
     validationSchema: Yup.object({
       username: Yup.string()
         .trim()
-        .min(3, 'Username min length is 3 characters')
-        .max(20, 'Username max length is 20 characters')
-        .required('This field is required'),
+        .min(3, t('userForm.error.usernameMin'))
+        .max(20, t('userForm.error.usernameMax'))
+        .required(t('form.error.required')),
       password: Yup.string()
         .trim()
-        .min(6, 'Password min length is 6 characters')
-        .required('This field is required'),
+        .min(6, t('userForm.error.passwordMin'))
+        .required(t('form.error.required')),
       passwordConfirmation: Yup.string()
         .trim()
-        .required('Please confirm your password')
-        .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+        .required(t('userForm.error.passwordConfirmationRequired'))
+        .oneOf([Yup.ref('password'), null], t('userForm.error.passwordConfirmationMatch')),
     }),
     onSubmit: (values) => {
       onSignup(values).finally(() => formik.setSubmitting(false));
@@ -42,7 +45,7 @@ const Signup = ({ onSignup, error, setError }) => {
       <Form onSubmit={formik.handleSubmit} className="auth-form d-flex flex-column justify-content-center align-items-center">
         <Form.Group className="mb-3 w-100">
           <Form.Label htmlFor="username">
-            Username
+            {t('userForm.label.username')}
           </Form.Label>
           <Form.Control
             id="username"
@@ -63,7 +66,7 @@ const Signup = ({ onSignup, error, setError }) => {
 
         <Form.Group className="mb-3 w-100">
           <Form.Label htmlFor="password">
-            Password
+            {t('userForm.label.password')}
           </Form.Label>
           <Form.Control
             id="password"
@@ -83,7 +86,7 @@ const Signup = ({ onSignup, error, setError }) => {
 
         <Form.Group className="mb-3 w-100">
           <Form.Label htmlFor="passwordConfirmation">
-            Confirm password
+            {t('userForm.label.passwordConfirmation')}
           </Form.Label>
           <Form.Control
             id="passwordConfirmation"
@@ -123,10 +126,13 @@ const Signup = ({ onSignup, error, setError }) => {
                 aria-hidden="true"
               />
             )
-            : 'Submit'}
+            : t('userForm.submitBtn')}
         </Button>
       </Form>
-      <Link to="/login" className="mt-3">Log in</Link>
+      <div className="text-center m-3">
+        <span>{t('userForm.hasAccount')}</span>
+        <Link to="/login">{t('userForm.link.logIn')}</Link>
+      </div>
     </main>
   );
 };

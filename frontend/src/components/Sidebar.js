@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -11,6 +12,7 @@ const Sidebar = () => {
   const { currentChannelId, channels } = useSelector((state) => state.channels);
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const handleChannelSwitch = (id) => {
     dispatch(channelsActions.switchChannel(id));
@@ -23,12 +25,12 @@ const Sidebar = () => {
   return (
     <div className="sidebar">
       <div className="sidebar__section-header d-flex justify-content-between align-items-center">
-        <h2 className="sidebar__section-name">Channels</h2>
+        <h2 className="sidebar__section-name">{t('channels.title')}</h2>
         <Button
           variant="outline-light"
           onClick={() => handleShowModal('new')}
         >
-          Add
+          {t('channels.addChannelBtn')}
         </Button>
       </div>
       <ListGroup variant="flush" as="ul" className="channels-list overflow-hidden-scroll">
@@ -49,8 +51,8 @@ const Sidebar = () => {
                 <Dropdown.Toggle split id={`channel-${channel.id}-dropdown-split`} className="flex-grow-0 bg-transparent border-0 rounded-0" />
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleShowModal('rename', { id: channel.id, name: channel.name })}>Rename</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleShowModal('remove', { id: channel.id })}>Remove</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleShowModal('rename', { id: channel.id, name: channel.name })}>{t('channels.rename')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleShowModal('remove', { id: channel.id })}>{t('channels.remove')}</Dropdown.Item>
                 </Dropdown.Menu>
               </>
               )}
