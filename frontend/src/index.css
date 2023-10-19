@@ -10,10 +10,12 @@ body {
 }
 
 :root {
-  --bg-dark-blue: #1e325c;
+  --bg-dark: #212529;
+  --bg-highlight: #0d6efd;
   --sidebar-width: 256px;
   --section-max-height: 100vh;
-  --section-name-height: 55px;
+  --section-name-height: 75px;
+  --header-height: 56px;
   --auth-form-width: 300px;
 }
 
@@ -21,6 +23,7 @@ body {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  max-height: 100vh;
 }
 
 main {
@@ -29,7 +32,6 @@ main {
   grid-template-areas:
     "sidebar content"
     "sidebar content";
-  max-height: 100vh;
 }
 
 textarea {
@@ -53,44 +55,47 @@ textarea {
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #fbfbfb;
+    background-color: var(--bg-dark);;
     border-radius: 4px;
   }
 }
 
 .sidebar {
   grid-area: sidebar;
-  background-color: var(--bg-dark-blue);
   max-width: 256px;
   height: 100%;
   align-self: flex-start;
-  color: #fff;
 
-  .list-group-item:hover {
-    background-color: rgba(255, 255, 255, 0.1) !important;
+  #add-channel-btn {
+    width: 24px;
+    height: 24px;
+    &:hover {
+      opacity: 0.6;
+    }
   }
-
-  .list-group-item.active {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-  }
-}
-
-.sidebar__section-header {
-  padding: 8px 16px;
-}
-
-.sidebar__section-name {
-  margin: 0;
 }
 
 .channels-list {
-  max-height: calc(var(--section-max-height) - var(--section-name-height));
+  padding: 0 0 36px 4px;
+  max-height: calc(var(--section-max-height) - var(--header-height) - var(--section-name-height));
+}
+
+.channels-list__item {
+  background-color: transparent;
+}
+
+.channels-list__item:hover {
+  background-color: rgba(33, 37, 41, 0.06);
+}
+
+.channels-list__item.active {
+  background-color: rgba(33, 37, 41, 0.15);
 }
 
 .channel-view {
   grid-area: content;
   ::-webkit-scrollbar-thumb {
-    background-color: var(--bg-dark-blue);
+    background-color: var(--bg-dark);
   }
 }
 

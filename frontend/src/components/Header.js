@@ -11,7 +11,7 @@ const Header = ({ onLogout }) => {
   const { t } = useTranslation();
 
   return (
-    <header className="header w-100">
+    <header className="header w-100 border-bottom">
       <Navbar className="bg-body-tertiary">
         <Container>
           <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
