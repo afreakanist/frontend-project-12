@@ -51,8 +51,8 @@ const Sidebar = () => {
                 <Dropdown.Toggle split id={`channel-${channel.id}-dropdown-split`} className="flex-grow-0 bg-transparent border-0 rounded-0" />
 
                 <Dropdown.Menu>
-                  <Dropdown.Item onClick={() => handleShowModal('rename', { id: channel.id, name: channel.name })}>{t('channels.rename')}</Dropdown.Item>
-                  <Dropdown.Item onClick={() => handleShowModal('remove', { id: channel.id })}>{t('channels.remove')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleShowModal('rename', channel)}>{t('channels.rename')}</Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleShowModal('remove', channel)}>{t('channels.remove')}</Dropdown.Item>
                 </Dropdown.Menu>
               </>
               )}

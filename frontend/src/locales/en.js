@@ -34,5 +34,12 @@ export default {
     'messageForm.sendBtn': 'Send message',
     'notFound.error': 'Page not found',
     'notFound.link': 'Go to main page',
+    'toast.success.newChannel': 'Channel "{{name}}" was successfully added',
+    'toast.success.renameChannel': 'Channel "{{prevName}}" was successfully renamed to "{{name}}"',
+    'toast.success.removeChannel': 'Channel "{{prevName}}" was successfully removed',
+    'toast.error.newChannel': 'Failed to create new channel: {{error}}',
+    'toast.error.renameChannel': 'Failed to rename channel: {{error}}',
+    'toast.error.removeChannel': 'Failed to remove channel: {{error}}',
+    'toast.error.getChatData': 'Failed to fetch chat data: {{error}}',
   },
 };

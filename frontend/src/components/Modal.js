@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
@@ -37,8 +38,12 @@ const ModalBox = () => {
       .then(() => {
         handleCloseModal();
         handleReset();
+        toast.success(t(`toast.success.${action}Channel`, { name, prevName: data?.name }));
       })
-      .catch((err) => console.error(err))
+      .catch((error) => {
+        toast.success(t(`toast.error.${action}Channel`, { error }));
+        console.error(error);
+      })
       .finally(() => setIsPending(false));
   };
 

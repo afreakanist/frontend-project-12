@@ -34,5 +34,12 @@ export default {
     'messageForm.sendBtn': 'Отправить сообщение',
     'notFound.error': 'Страница не найдена',
     'notFound.link': 'Вернуться на главную',
+    'toast.success.newChannel': 'Канал "{{name}}" успешно добавлен',
+    'toast.success.renameChannel': 'Канал "{{prevName}}" был успешно переименован в "{{name}}"',
+    'toast.success.removeChannel': 'Канал "{{prevName}}" был успешно удалён',
+    'toast.error.newChannel': 'Не удалось создать канал: {{error}}',
+    'toast.error.renameChannel': 'Не удалось переименовать канал: {{error}}',
+    'toast.error.removeChannel': 'Не удалось удалить канал: {{error}}',
+    'toast.error.getChatData': 'Не удалось загрузить данные: {{error}}',
   },
 };

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import {
   Navigate, Routes, Route, useNavigate, useLocation,
 } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 
 import * as api from './utils/api';
@@ -106,6 +107,7 @@ const App = () => {
         <Route path="signup" element={<Signup onSignup={handleSignup} error={requestError} setError={setRequestError} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <ToastContainer position="top-right" />
     </CurrentUserCtx.Provider>
   );
 };
