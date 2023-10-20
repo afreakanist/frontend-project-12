@@ -1,7 +1,7 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
@@ -17,13 +17,13 @@ const Login = ({ onLogin, error, setError }) => {
     validationSchema: Yup.object({
       username: Yup.string()
         .trim()
-        .min(3, t('userForm.error.usernameMin'))
-        .max(20, t('userForm.error.usernameMax'))
-        .required(t('form.error.required')),
+        .min(3, 'userForm.error.usernameMin')
+        .max(20, 'userForm.error.usernameMax')
+        .required('form.error.required'),
       password: Yup.string()
         .trim()
-        .min(6, t('userForm.error.passwordMin'))
-        .required(t('form.error.required')),
+        .min(6, 'userForm.error.passwordMin')
+        .required('form.error.required'),
     }),
     onSubmit: (values) => {
       onLogin(values).finally(() => formik.setSubmitting(false));
@@ -55,7 +55,7 @@ const Login = ({ onLogin, error, setError }) => {
             autoFocus
           />
           {formik.touched.username && formik.errors.username ? (
-            <Form.Text className="text-danger">{formik.errors.username}</Form.Text>
+            <Form.Text className="text-danger">{t(formik.errors.username)}</Form.Text>
           ) : null}
         </Form.Group>
 
@@ -75,7 +75,7 @@ const Login = ({ onLogin, error, setError }) => {
             value={formik.values.password}
           />
           {formik.touched.password && formik.errors.password ? (
-            <Form.Text className="text-danger">{formik.errors.password}</Form.Text>
+            <Form.Text className="text-danger">{t(formik.errors.password)}</Form.Text>
           ) : null}
         </Form.Group>
 

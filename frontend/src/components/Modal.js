@@ -56,17 +56,17 @@ const ModalBox = () => {
     validationSchema: Yup.object({
       name: Yup.string()
         .trim()
-        .min(4, t('channelsForm.error.nameMin'))
-        .max(62, t('channelsForm.error.nameMax'))
-        .required(t('form.error.required'))
+        .min(4, 'channelsForm.error.nameMin')
+        .max(62, 'channelsForm.error.nameMax')
+        .required('form.error.required')
         .test({
           name: 'custom-check',
           test(value, ctx) {
             if (action === 'rename' && value === data?.name) {
-              return ctx.createError({ message: t('channelsForm.error.noChange') });
+              return ctx.createError({ message: 'channelsForm.error.noChange' });
             }
             if (channelsNames.includes(value)) {
-              return ctx.createError({ message: t('channelsForm.error.conflict') });
+              return ctx.createError({ message: 'channelsForm.error.conflict' });
             }
             return true;
           },
@@ -110,7 +110,7 @@ const ModalBox = () => {
                   className={formik.errors.name ? 'is-invalid' : ''}
                 />
                 {formik.errors.name
-                  ? <Form.Text className="text-danger">{formik.errors.name}</Form.Text>
+                  ? <Form.Text className="text-danger">{t(formik.errors.name)}</Form.Text>
                   : null}
               </Form.Group>
             </Form>

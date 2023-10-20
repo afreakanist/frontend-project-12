@@ -84,11 +84,13 @@ textarea {
   background-color: transparent;
 }
 
-.channels-list__item:hover {
+.channels-list__item:hover,
+.languages-list__item:hover {
   background-color: rgba(33, 37, 41, 0.06);
 }
 
-.channels-list__item.active {
+.channels-list__item.active,
+.languages-list__item.active  {
   background-color: rgba(33, 37, 41, 0.15);
 }
 
