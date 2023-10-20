@@ -6,6 +6,7 @@ export default {
     'userForm.label.passwordConfirmation': 'Подтвердите пароль',
     'userForm.error.usernameMin': 'Минимальная длина ника — 3 символа',
     'userForm.error.usernameMax': 'Максимальная длина ника — 20 символов',
+    'userForm.error.usernameProfanity': 'Нехорошие слова под запретом. Подумайте ещё',
     'userForm.error.passwordMin': 'Минимальная длина пароля — 6 символов',
     'userForm.error.passwordConfirmationRequired': 'Пожалуйста, подтвердите пароль',
     'userForm.error.passwordConfirmationMatch': 'Пароли не совпадают',

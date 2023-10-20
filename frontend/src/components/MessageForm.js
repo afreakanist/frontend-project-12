@@ -6,6 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import filter from 'leo-profanity';
 
 import { sendMessage } from '../utils/chatApi';
 import CurrentUserCtx from '../contexts/CurrentUserCtx';
@@ -27,7 +28,7 @@ const MessageForm = () => {
     }),
     onSubmit: ({ message }) => {
       const newMessage = {
-        body: message,
+        body: filter.clean(message),
         channelId: currentChannelId,
         username,
       };

@@ -1,10 +1,11 @@
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import filter from 'leo-profanity';
 
 const Signup = ({ onSignup, error, setError }) => {
   const { t } = useTranslation();
@@ -20,7 +21,16 @@ const Signup = ({ onSignup, error, setError }) => {
         .trim()
         .min(3, 'userForm.error.usernameMin')
         .max(20, 'userForm.error.usernameMax')
-        .required('form.error.required'),
+        .required('form.error.required')
+        .test({
+          name: 'profanity-check',
+          test(value, ctx) {
+            if (filter.badWordsUsed(value).length) {
+              return ctx.createError({ message: 'userForm.error.usernameProfanity' });
+            }
+            return true;
+          },
+        }),
       password: Yup.string()
         .trim()
         .min(6, 'userForm.error.passwordMin')

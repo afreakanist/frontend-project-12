@@ -6,6 +6,7 @@ export default {
     'userForm.label.passwordConfirmation': 'Confirm password',
     'userForm.error.usernameMin': 'Username min length is 3 characters',
     'userForm.error.usernameMax': 'Username max length is 20 characters',
+    'userForm.error.usernameProfanity': 'Using bad words is prohibited. Choose wiser',
     'userForm.error.passwordMin': 'Password min length is 6 characters',
     'userForm.error.passwordConfirmationRequired': 'Please confirm your password',
     'userForm.error.passwordConfirmationMatch': 'Passwords must match',

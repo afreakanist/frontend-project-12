@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
@@ -16,10 +17,8 @@ const ModalBox = () => {
   const { show, action, data } = useSelector((state) => state.modal.modal);
   const channelsNames = useSelector((state) => state.channels.channels).map((c) => c.name);
   const [isPending, setIsPending] = useState(false);
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
   const inputElem = useRef(null);
 
   useEffect(() => {
@@ -33,12 +32,13 @@ const ModalBox = () => {
   };
 
   const handleAcceptBtn = ({ name }, handleReset = () => {}) => {
+    const cleanName = filter.clean(name);
     setIsPending(true);
-    handleChannel({ action, ...data, name })
+    handleChannel({ action, ...data, name: cleanName })
       .then(() => {
         handleCloseModal();
         handleReset();
-        toast.success(t(`toast.success.${action}Channel`, { name, prevName: data?.name }));
+        toast.success(t(`toast.success.${action}Channel`, { name: cleanName, prevName: data?.name }));
       })
       .catch((error) => {
         toast.success(t(`toast.error.${action}Channel`, { error }));
