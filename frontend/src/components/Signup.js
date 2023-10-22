@@ -61,6 +61,11 @@ const Signup = () => {
     },
   });
 
+  const handleChange = (event) => {
+    setRequestError(null);
+    formik.handleChange(event);
+  };
+
   return (
     <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1">
       <Form onSubmit={formik.handleSubmit} className="auth-form d-flex flex-column justify-content-center align-items-center">
@@ -75,7 +80,7 @@ const Signup = () => {
             className={
               `${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
             }
-            onChange={formik.handleChange}
+            onChange={handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.username}
             ref={inputElem}
@@ -96,7 +101,7 @@ const Signup = () => {
             className={
               `${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
             }
-            onChange={formik.handleChange}
+            onChange={handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
@@ -116,7 +121,7 @@ const Signup = () => {
             className={
               `${formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? 'is-invalid' : ''}`
             }
-            onChange={formik.handleChange}
+            onChange={handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.passwordConfirmation}
           />
@@ -125,7 +130,7 @@ const Signup = () => {
           ) : null}
         </Form.Group>
 
-        { requestError && <div className="mb-3 text-danger text-center">{t(requestError.key, { ...requestError.values })}</div>}
+        { requestError && <div className="mb-3 text-danger text-center">{t(requestError?.key, { ...requestError?.values })}</div>}
 
         <Button
           type="submit"
