@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -5,9 +6,22 @@ import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
+import { useAuth } from '../hooks/useAuth';
 
-const Login = ({ onLogin, error, setError }) => {
+const Login = () => {
+  const {
+    handleLogin, handleError, requestError, setRequestError,
+  } = useAuth();
   const { t } = useTranslation();
+  const inputElem = useRef(null);
+
+  useEffect(() => {
+    if (inputElem.current) {
+      inputElem.current.focus();
+    }
+
+    return () => setRequestError(null);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -26,14 +40,11 @@ const Login = ({ onLogin, error, setError }) => {
         .required('form.error.required'),
     }),
     onSubmit: (values) => {
-      onLogin(values).finally(() => formik.setSubmitting(false));
+      handleLogin(values)
+        .catch((error) => handleError(error, 'login'))
+        .finally(() => formik.setSubmitting(false));
     },
   });
-
-  const handleChange = (event) => {
-    setError('');
-    formik.handleChange(event);
-  };
 
   return (
     <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1">
@@ -49,10 +60,10 @@ const Login = ({ onLogin, error, setError }) => {
             className={
               `${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
             }
-            onChange={handleChange}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.username}
-            autoFocus
+            ref={inputElem}
           />
           {formik.touched.username && formik.errors.username ? (
             <Form.Text className="text-danger">{t(formik.errors.username)}</Form.Text>
@@ -70,7 +81,7 @@ const Login = ({ onLogin, error, setError }) => {
             className={
               `${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
             }
-            onChange={handleChange}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
@@ -79,17 +90,18 @@ const Login = ({ onLogin, error, setError }) => {
           ) : null}
         </Form.Group>
 
-        { error && <div className="mb-3 text-danger">{error}</div>}
+        { requestError && <div className="mb-3 text-danger text-center">{t(requestError.key, { ...requestError.values })}</div>}
 
         <Button
           type="submit"
           className="w-100"
           variant={
-            error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
+            requestError
+              || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!error || Object.keys(formik.errors).length}
+          disabled={!!requestError || Object.keys(formik.errors).length}
         >
           {formik.isSubmitting
             ? (

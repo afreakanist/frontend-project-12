@@ -1,5 +1,9 @@
 export default {
   translation: {
+    'requestError.401.login': '{{message}} ({{statusCode}}): Неверный ник или пароль',
+    'requestError.401.getData': '{{message}} ({{statusCode}}): Необходимо авторизоваться',
+    'requestError.409': '{{message}} ({{statusCode}}): Этот ник уже занят',
+    'requestError.500': '{{message}} ({{statusCode}}): Что-то пошло не так...',
     'form.error.required': 'Это поле нужно заполнить',
     'userForm.label.username': 'Ваш ник',
     'userForm.label.password': 'Пароль',

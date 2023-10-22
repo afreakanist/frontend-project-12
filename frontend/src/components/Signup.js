@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
@@ -6,9 +7,22 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import filter from 'leo-profanity';
+import { useAuth } from '../hooks/useAuth';
 
-const Signup = ({ onSignup, error, setError }) => {
+const Signup = () => {
+  const {
+    handleSignup, handleError, requestError, setRequestError,
+  } = useAuth();
   const { t } = useTranslation();
+  const inputElem = useRef(null);
+
+  useEffect(() => {
+    if (inputElem.current) {
+      inputElem.current.focus();
+    }
+
+    return () => setRequestError(null);
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -41,14 +55,11 @@ const Signup = ({ onSignup, error, setError }) => {
         .oneOf([Yup.ref('password'), null], 'userForm.error.passwordConfirmationMatch'),
     }),
     onSubmit: (values) => {
-      onSignup(values).finally(() => formik.setSubmitting(false));
+      handleSignup(values)
+        .catch((error) => handleError(error))
+        .finally(() => formik.setSubmitting(false));
     },
   });
-
-  const handleChange = (event) => {
-    setError('');
-    formik.handleChange(event);
-  };
 
   return (
     <main className="d-flex flex-column align-items-center justify-content-center flex-grow-1">
@@ -64,10 +75,10 @@ const Signup = ({ onSignup, error, setError }) => {
             className={
               `${formik.touched.username && formik.errors.username ? 'is-invalid' : ''}`
             }
-            onChange={handleChange}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.username}
-            autoFocus
+            ref={inputElem}
           />
           {formik.touched.username && formik.errors.username ? (
             <Form.Text className="text-danger">{t(formik.errors.username)}</Form.Text>
@@ -85,7 +96,7 @@ const Signup = ({ onSignup, error, setError }) => {
             className={
               `${formik.touched.password && formik.errors.password ? 'is-invalid' : ''}`
             }
-            onChange={handleChange}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.password}
           />
@@ -105,7 +116,7 @@ const Signup = ({ onSignup, error, setError }) => {
             className={
               `${formik.touched.passwordConfirmation && formik.errors.passwordConfirmation ? 'is-invalid' : ''}`
             }
-            onChange={handleChange}
+            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.passwordConfirmation}
           />
@@ -114,17 +125,18 @@ const Signup = ({ onSignup, error, setError }) => {
           ) : null}
         </Form.Group>
 
-        { error && <div className="mb-3 text-danger">{error}</div>}
+        { requestError && <div className="mb-3 text-danger text-center">{t(requestError.key, { ...requestError.values })}</div>}
 
         <Button
           type="submit"
           className="w-100"
           variant={
-            error || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
+            requestError
+              || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!error || Object.keys(formik.errors).length}
+          disabled={!!requestError || Object.keys(formik.errors).length}
         >
           {formik.isSubmitting
             ? (

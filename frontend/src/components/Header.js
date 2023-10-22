@@ -1,15 +1,14 @@
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Navbar from 'react-bootstrap/Navbar';
-import CurrentUserCtx from '../contexts/CurrentUserCtx';
 
 import { ReactComponent as SelectLanguageIcon } from '../assets/select-language.svg';
+import { useAuth } from '../hooks/useAuth';
 
-const Header = ({ onLogout }) => {
-  const currentUser = useContext(CurrentUserCtx);
+const Header = () => {
+  const { user, handleLogout } = useAuth();
   const { t, i18n } = useTranslation();
 
   const handleLngChange = (lng) => {
@@ -44,8 +43,8 @@ const Header = ({ onLogout }) => {
               </Dropdown.Menu>
             </Dropdown>
           </Navbar.Collapse>
-          {currentUser.isLoggedIn
-            ? <Button onClick={onLogout}>{t('header.logOutBtn')}</Button>
+          {user?.isLoggedIn
+            ? <Button onClick={handleLogout}>{t('header.logOutBtn')}</Button>
             : null}
         </Container>
       </Navbar>

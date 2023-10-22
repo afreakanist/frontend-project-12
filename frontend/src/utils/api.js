@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-export const signup = (username, password) => axios
+export const signup = ({ username, password }) => axios
   .post('/api/v1/signup', { username, password })
   .then((response) => response.data);
 
-export const login = (username, password) => axios
+export const login = ({ username, password }) => axios
   .post('/api/v1/login', { username, password })
   .then((response) => response.data);
 

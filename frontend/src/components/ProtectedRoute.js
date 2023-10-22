@@ -1,12 +1,10 @@
-import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
-
-import CurrentUserCtx from '../contexts/CurrentUserCtx';
+import { useAuth } from '../hooks/useAuth';
 
 const ProtectedRoute = ({ children }) => {
-  const currentUser = useContext(CurrentUserCtx);
+  const { user } = useAuth();
 
-  return currentUser.isLoggedIn ? children : <Navigate to="/login" replace />;
+  return user?.isLoggedIn ? children : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;
