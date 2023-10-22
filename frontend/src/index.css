@@ -110,9 +110,6 @@ textarea {
 }
 
 .not-found__wrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding: 60px 0;
 }
 
@@ -122,8 +119,6 @@ textarea {
 
 .not-found__status {
   font-size: 140px;
-  font-weight: 400;
-  margin: 0;
 }
 
 @media (max-width: 520px) {
@@ -133,12 +128,10 @@ textarea {
 }
 
 .not-found__message {
-  text-align: center;
   margin: 5px 0 0;
 }
 
 .not-found__link {
-  text-align: center;
   text-decoration: none;
 }
 
