@@ -33,6 +33,7 @@ const Sidebar = () => {
           onClick={() => handleShowModal('new')}
         >
           <AddChannelIcon />
+          <span className="visually-hidden">+</span>
         </Button>
       </div>
       <ListGroup variant="flush" as="ul" className="channels-list overflow-hidden-scroll">
@@ -50,8 +51,9 @@ const Sidebar = () => {
 
               {channel.removable && (
               <>
-                <Dropdown.Toggle split variant="light" id={`channel-${channel.id}-toggle`} className="flex-grow-0 bg-transparent border-0" />
-
+                <Dropdown.Toggle split variant="light" id={`channel-${channel.id}-toggle`} className="flex-grow-0 bg-transparent border-0">
+                  <span className="visually-hidden">{t('channels.manageBtn')}</span>
+                </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleShowModal('rename', channel)}>{t('channels.rename')}</Dropdown.Item>
                   <Dropdown.Item onClick={() => handleShowModal('remove', channel)}>{t('channels.remove')}</Dropdown.Item>

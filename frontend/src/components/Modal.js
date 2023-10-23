@@ -109,6 +109,7 @@ const ModalBox = () => {
                   value={formik.values.name}
                   className={formik.errors.name ? 'is-invalid' : ''}
                 />
+                <Form.Label className="visually-hidden" forHtml="name">{t('channelsForm.label')}</Form.Label>
                 {formik.errors.name
                   ? <Form.Text className="text-danger">{t(formik.errors.name)}</Form.Text>
                   : null}
