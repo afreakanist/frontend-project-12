@@ -118,7 +118,7 @@ const Login = () => {
                 aria-hidden="true"
               />
             )
-            : t('userForm.submitBtn')}
+            : t('userForm.submitBtn.login')}
         </Button>
       </Form>
       <div className="text-center m-3">

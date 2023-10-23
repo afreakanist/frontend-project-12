@@ -71,7 +71,7 @@ const Signup = () => {
       <Form onSubmit={formik.handleSubmit} className="auth-form d-flex flex-column justify-content-center align-items-center">
         <Form.Group className="mb-3 w-100">
           <Form.Label htmlFor="username">
-            {t('userForm.label.username')}
+            {t('userForm.label.signupUsername')}
           </Form.Label>
           <Form.Control
             id="username"
@@ -153,7 +153,7 @@ const Signup = () => {
                 aria-hidden="true"
               />
             )
-            : t('userForm.submitBtn')}
+            : t('userForm.submitBtn.signup')}
         </Button>
       </Form>
       <div className="text-center m-3">
