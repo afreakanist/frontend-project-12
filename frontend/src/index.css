@@ -5,9 +5,135 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  --bg-dark: #212529;
+  --bg-highlight: #0d6efd;
+  --sidebar-width: 256px;
+  --section-max-height: 100vh;
+  --section-name-height: 75px;
+  --header-height: 56px;
+  --auth-form-width: 300px;
 }
+
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-height: 100vh;
+}
+
+main {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) auto;
+  grid-template-areas:
+    "sidebar content"
+    "sidebar content";
+}
+
+textarea {
+  resize: none;
+}
+
+.overflow-hidden-scroll {
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    width: 4px;
+    height: 0;
+  }
+  &::-webkit-scrollbar-button,
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--bg-dark);;
+    border-radius: 4px;
+  }
+}
+
+.sidebar {
+  grid-area: sidebar;
+  max-width: 256px;
+  height: 100%;
+  align-self: flex-start;
+
+  #add-channel-btn {
+    width: 24px;
+    height: 24px;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
+}
+
+.channels-list {
+  padding: 0 0 36px 4px;
+  max-height: calc(var(--section-max-height) - var(--header-height) - var(--section-name-height));
+}
+
+.channels-list__item {
+  background-color: transparent;
+}
+
+.channels-list__item:hover,
+.languages-list__item:hover {
+  background-color: rgba(33, 37, 41, 0.06);
+}
+
+.channels-list__item.active,
+.languages-list__item.active  {
+  background-color: rgba(33, 37, 41, 0.15);
+}
+
+.channel-view {
+  grid-area: content;
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-dark);
+  }
+}
+
+.message-box {
+  padding: 48px 16px;
+}
+
+.auth-form {
+  width: var(--auth-form-width);
+}
+
+.not-found__wrapper {
+  padding: 60px 0;
+}
+
+.not-found__error {
+  margin: 0 0 32px;
+}
+
+.not-found__status {
+  font-size: 140px;
+}
+
+@media (max-width: 520px) {
+  .not-found__status {
+    font-size: 80px;
+  }
+}
+
+.not-found__message {
+  margin: 5px 0 0;
+}
+
+.not-found__link {
+  text-decoration: none;
+}
+
+@import '~bootstrap/dist/css/bootstrap';
+@import '~react-toastify/dist/ReactToastify.css';
