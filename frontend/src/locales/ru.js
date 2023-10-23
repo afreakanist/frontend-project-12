@@ -41,6 +41,7 @@ export default {
     'modal.acceptBtn': 'ОК',
     'messages.noMessages': 'Здесь пока нет сообщений',
     'messageForm.error.required': 'Сообщение не должно быть пустым',
+    'messageForm.ariaLabel.message': 'Новое сообщение',
     'messageForm.placeholder.message': 'Напишите что-нибудь...',
     'messageForm.sendBtn': 'Отправить',
     'notFound.error': 'Страница не найдена',

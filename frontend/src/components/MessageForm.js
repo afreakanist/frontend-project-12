@@ -50,7 +50,7 @@ const MessageForm = () => {
           id="message"
           name="message"
           placeholder={t('messageForm.placeholder.message')}
-          aria-label="Message"
+          aria-label={t('messageForm.ariaLabel.message')}
           className="border-0"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}

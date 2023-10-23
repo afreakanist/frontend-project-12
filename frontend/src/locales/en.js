@@ -41,6 +41,7 @@ export default {
     'modal.acceptBtn': 'OK',
     'messages.noMessages': 'No messages here yet',
     'messageForm.error.required': 'Message must not be empty',
+    'messageForm.ariaLabel.message': 'New message',
     'messageForm.placeholder.message': 'Write something here ...',
     'messageForm.sendBtn': 'Send message',
     'notFound.error': 'Page not found',
