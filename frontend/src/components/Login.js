@@ -104,7 +104,7 @@ const Login = () => {
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!requestError || Object.keys(formik.errors).length}
+          disabled={!!requestError || Object.keys(formik.errors).length || formik.isSubmitting}
         >
           {formik.isSubmitting
             ? (

@@ -136,13 +136,7 @@ const Signup = () => {
         <Button
           type="submit"
           className="w-100"
-          variant={
-            requestError
-              || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
-              ? 'secondary'
-              : 'primary'
-          }
-          disabled={!!requestError || Object.keys(formik.errors).length}
+          disabled={formik.isSubmitting}
         >
           {formik.isSubmitting
             ? (
