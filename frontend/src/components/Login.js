@@ -24,6 +24,7 @@ const Login = () => {
   }, []);
 
   const formik = useFormik({
+    validateOnBlur: false,
     initialValues: {
       username: '',
       password: '',

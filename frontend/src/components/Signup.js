@@ -25,6 +25,7 @@ const Signup = () => {
   }, []);
 
   const formik = useFormik({
+    validateOnBlur: false,
     initialValues: {
       username: '',
       password: '',
