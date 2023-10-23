@@ -32,12 +32,9 @@ const Login = () => {
     validationSchema: Yup.object({
       username: Yup.string()
         .trim()
-        .min(3, 'userForm.error.usernameMin')
-        .max(20, 'userForm.error.usernameMax')
         .required('form.error.required'),
       password: Yup.string()
         .trim()
-        .min(6, 'userForm.error.passwordMin')
         .required('form.error.required'),
     }),
     onSubmit: (values) => {
