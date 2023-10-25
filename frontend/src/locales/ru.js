@@ -1,6 +1,6 @@
 export default {
   translation: {
-    'requestError.401.login': '{{message}} ({{statusCode}}): Неверный ник или пароль',
+    'requestError.401.login': 'Неверные имя пользователя или пароль',
     'requestError.401.getData': '{{message}} ({{statusCode}}): Необходимо авторизоваться',
     'requestError.409': '{{message}} ({{statusCode}}): Этот ник уже занят',
     'requestError.500': '{{message}} ({{statusCode}}): Что-то пошло не так...',
@@ -28,9 +28,11 @@ export default {
     'header.languages.ru': 'Русский',
     'channels.title': 'Каналы',
     'channels.addChannelBtn': 'Добавить',
+    'channels.manageBtn': 'Управление каналом',
     'channels.new': 'Добавить новый канал',
     'channels.rename': 'Переименовать канал',
     'channels.remove': 'Удалить канал',
+    'channelsForm.label': 'Имя канала',
     'channelsForm.error.nameMin': 'Минимальная длина имени канала — 4 символа',
     'channelsForm.error.nameMax': 'Максимальная длина имени канала — 62 символа',
     'channelsForm.error.noChange': 'Кажется, ничего не изменилось. Если передумали, нажмите "Отмена"',
@@ -41,6 +43,7 @@ export default {
     'modal.acceptBtn': 'ОК',
     'messages.noMessages': 'Здесь пока нет сообщений',
     'messageForm.error.required': 'Сообщение не должно быть пустым',
+    'messageForm.ariaLabel.message': 'Новое сообщение',
     'messageForm.placeholder.message': 'Напишите что-нибудь...',
     'messageForm.sendBtn': 'Отправить',
     'notFound.error': 'Страница не найдена',

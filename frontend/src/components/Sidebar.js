@@ -29,10 +29,11 @@ const Sidebar = () => {
         <h2 className="m-0 fs-5">{t('channels.title')}</h2>
         <Button
           id="add-channel-btn"
-          className="bg-transparent p-0 border-0 shadow-none text-dark"
+          className="bg-transparent p-0 border-0 shadow-none text-dark position-relative"
           onClick={() => handleShowModal('new')}
         >
           <AddChannelIcon />
+          <span className="visually-hidden top-50 start-50 translate-middle">+</span>
         </Button>
       </div>
       <ListGroup variant="flush" as="ul" className="channels-list overflow-hidden-scroll">
@@ -50,8 +51,9 @@ const Sidebar = () => {
 
               {channel.removable && (
               <>
-                <Dropdown.Toggle split variant="light" id={`channel-${channel.id}-toggle`} className="flex-grow-0 bg-transparent border-0" />
-
+                <Dropdown.Toggle split variant="light" id={`channel-${channel.id}-toggle`} className="flex-grow-0 bg-transparent border-0">
+                  <span className="visually-hidden">{t('channels.manageBtn')}</span>
+                </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item onClick={() => handleShowModal('rename', channel)}>{t('channels.rename')}</Dropdown.Item>
                   <Dropdown.Item onClick={() => handleShowModal('remove', channel)}>{t('channels.remove')}</Dropdown.Item>

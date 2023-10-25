@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
@@ -14,6 +15,13 @@ const MessageForm = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
   const { user: { username } } = useAuth();
   const { t } = useTranslation();
+  const inputElem = useRef(null);
+
+  useEffect(() => {
+    if (inputElem.current) {
+      inputElem.current.focus();
+    }
+  }, [currentChannelId]);
 
   const formik = useFormik({
     validateOnMount: true,
@@ -50,11 +58,12 @@ const MessageForm = () => {
           id="message"
           name="message"
           placeholder={t('messageForm.placeholder.message')}
-          aria-label="Message"
+          aria-label={t('messageForm.ariaLabel.message')}
           className="border-0"
           onBlur={formik.handleBlur}
           onChange={formik.handleChange}
           value={formik.values.message}
+          ref={inputElem}
         />
         <Button
           type="submit"

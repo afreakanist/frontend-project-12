@@ -24,6 +24,7 @@ const Login = () => {
   }, []);
 
   const formik = useFormik({
+    validateOnBlur: false,
     initialValues: {
       username: '',
       password: '',
@@ -31,12 +32,9 @@ const Login = () => {
     validationSchema: Yup.object({
       username: Yup.string()
         .trim()
-        .min(3, 'userForm.error.usernameMin')
-        .max(20, 'userForm.error.usernameMax')
         .required('form.error.required'),
       password: Yup.string()
         .trim()
-        .min(6, 'userForm.error.passwordMin')
         .required('form.error.required'),
     }),
     onSubmit: (values) => {
@@ -106,7 +104,7 @@ const Login = () => {
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!requestError || Object.keys(formik.errors).length}
+          disabled={!!requestError || Object.keys(formik.errors).length || formik.isSubmitting}
         >
           {formik.isSubmitting
             ? (
