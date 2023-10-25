@@ -29,11 +29,11 @@ const Sidebar = () => {
         <h2 className="m-0 fs-5">{t('channels.title')}</h2>
         <Button
           id="add-channel-btn"
-          className="bg-transparent p-0 border-0 shadow-none text-dark"
+          className="bg-transparent p-0 border-0 shadow-none text-dark position-relative"
           onClick={() => handleShowModal('new')}
         >
           <AddChannelIcon />
-          <span className="visually-hidden">+</span>
+          <span className="visually-hidden top-50 start-50 translate-middle">+</span>
         </Button>
       </div>
       <ListGroup variant="flush" as="ul" className="channels-list overflow-hidden-scroll">
