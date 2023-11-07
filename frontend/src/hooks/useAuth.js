@@ -49,6 +49,16 @@ export const useProvideAuth = () => {
     localStorage.clear();
   };
 
+  const buildAuthHeaders = () => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      return {
+        Authorization: `Bearer ${token}`,
+      };
+    }
+    return null;
+  };
+
   const buildI18nKey = (statusCode, callee) => (callee
     ? `requestError.${statusCode}.${callee}`
     : `requestError.${statusCode}`);
@@ -67,6 +77,7 @@ export const useProvideAuth = () => {
     handleSignup,
     handleLogin,
     handleLogout,
+    buildAuthHeaders,
     handleError,
   };
 

@@ -9,10 +9,6 @@ export const login = ({ username, password }) => axios
   .post(routes.login, { username, password })
   .then((response) => response.data);
 
-export const getData = (token) => axios
-  .get(routes.data, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+export const getData = (headers) => axios
+  .get(routes.data, { headers })
   .then((response) => response.data);
