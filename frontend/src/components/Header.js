@@ -5,7 +5,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Navbar from 'react-bootstrap/Navbar';
 
 import { ReactComponent as SelectLanguageIcon } from '../assets/select-language.svg';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 
 const Header = () => {
   const { user, handleLogout } = useAuth();

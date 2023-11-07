@@ -7,7 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import filter from 'leo-profanity';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
 import useChat from '../hooks/useChat';
 import { ReactComponent as SendMessageIcon } from '../assets/arrow.svg';
 

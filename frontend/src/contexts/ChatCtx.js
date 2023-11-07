@@ -54,7 +54,7 @@ const chatApi = {
   },
 };
 
-export const ChatCtxProvider = ({ children }) => (
+export const ChatProvider = ({ children }) => (
   <ChatCtx.Provider value={chatApi}>
     {children}
   </ChatCtx.Provider>

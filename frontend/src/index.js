@@ -7,13 +7,15 @@ import i18n from 'i18next';
 import filter from 'leo-profanity';
 
 import './index.css';
+import { ChatProvider } from './contexts/ChatCtx';
+import { AuthProvider } from './contexts/CurrentUserCtx';
 import App from './App';
 import store from './slices/index';
 import en from './locales/en';
 import ru from './locales/ru';
 
 const rollbarConfig = {
-  accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+  accessToken: process.env.NODE_ENV === 'production' ? process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN : null,
   environment: process.env.NODE_ENV,
   captureUncaught: true,
   captureUnhandledRejections: true,
@@ -43,7 +45,11 @@ const app = async () => {
         <I18nextProvider i18n={i18nInstance}>
           <Provider store={store}>
             <BrowserRouter>
-              <App />
+              <AuthProvider>
+                <ChatProvider>
+                  <App />
+                </ChatProvider>
+              </AuthProvider>
             </BrowserRouter>
           </Provider>
         </I18nextProvider>
