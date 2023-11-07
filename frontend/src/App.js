@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import CurrentUserCtx from './contexts/CurrentUserCtx';
+import { ChatCtxProvider } from './contexts/ChatCtx';
 import { useProvideAuth } from './hooks/useAuth';
 import routes from './utils/routes';
 import Header from './components/Header';
@@ -20,14 +21,16 @@ const App = () => {
 
   return (
     <CurrentUserCtx.Provider value={auth}>
-      <Header />
-      <Routes>
-        <Route path={routes.mainPage} element={<ProtectedRoute><Main /></ProtectedRoute>} />
-        <Route path={routes.loginPage} element={<Login />} />
-        <Route path={routes.signupPage} element={<Signup />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <ToastContainer position="top-right" />
+      <ChatCtxProvider>
+        <Header />
+        <Routes>
+          <Route path={routes.mainPage} element={<ProtectedRoute><Main /></ProtectedRoute>} />
+          <Route path={routes.loginPage} element={<Login />} />
+          <Route path={routes.signupPage} element={<Signup />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <ToastContainer position="top-right" />
+      </ChatCtxProvider>
     </CurrentUserCtx.Provider>
   );
 };

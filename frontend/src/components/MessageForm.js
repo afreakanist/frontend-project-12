@@ -8,12 +8,13 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import filter from 'leo-profanity';
 import { useAuth } from '../hooks/useAuth';
-import { sendMessage } from '../utils/chatApi';
+import useChat from '../hooks/useChat';
 import { ReactComponent as SendMessageIcon } from '../assets/arrow.svg';
 
 const MessageForm = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
   const { user: { username } } = useAuth();
+  const { sendMessage } = useChat();
   const { t } = useTranslation();
   const inputElem = useRef(null);
 

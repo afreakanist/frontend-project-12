@@ -11,7 +11,7 @@ import Modal from 'react-bootstrap/Modal';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { actions as modalActions } from '../slices/modalSlice';
-import { handleChannel } from '../utils/chatApi';
+import useChat from '../hooks/useChat';
 
 const ModalBox = () => {
   const { show, action, data } = useSelector((state) => state.modal.modal);
@@ -20,6 +20,7 @@ const ModalBox = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputElem = useRef(null);
+  const { handleChannel } = useChat();
 
   useEffect(() => {
     if (inputElem.current) {
