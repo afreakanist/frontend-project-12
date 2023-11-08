@@ -1,13 +1,16 @@
 import { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { createSelector } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
 import ListGroup from 'react-bootstrap/ListGroup';
 import MessageForm from './MessageForm';
 
 const ChannelView = () => {
   const { currentChannelId } = useSelector((state) => state.channels);
-  const messages = useSelector((state) => state.messages.messages
+  const selectMessages = (state) => state.messages.messages;
+  const selectCurrChannelMessages = createSelector(selectMessages, (messages) => messages
     .filter((message) => message.channelId === currentChannelId));
+  const messages = useSelector(selectCurrChannelMessages);
   const { t } = useTranslation();
   const anchorElem = useRef(null);
 
