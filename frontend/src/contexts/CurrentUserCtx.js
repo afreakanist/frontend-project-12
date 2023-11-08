@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }) => {
     setUser({ username, isLoggedIn: true });
     localStorage.setItem('jwt', token);
     localStorage.setItem('username', username);
-    navigate('/');
   }, []);
 
   const handleSignup = useCallback((userData) => api.signup(userData).then(onAuthSuccess), []);

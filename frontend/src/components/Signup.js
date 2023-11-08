@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import filter from 'leo-profanity';
 import useAuth from '../hooks/useAuth';
+import routes from '../utils/routes';
 
 const Signup = () => {
   const {
@@ -15,6 +16,7 @@ const Signup = () => {
   } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (inputElem.current) {
@@ -55,10 +57,15 @@ const Signup = () => {
         .required('userForm.error.passwordConfirmationRequired')
         .oneOf([Yup.ref('password'), null], 'userForm.error.passwordConfirmationMatch'),
     }),
-    onSubmit: (values) => {
-      handleSignup(values)
-        .catch((error) => handleError(error))
-        .finally(() => formik.setSubmitting(false));
+    onSubmit: async (values) => {
+      try {
+        await handleSignup(values);
+        navigate(routes.mainPage);
+      } catch (error) {
+        handleError(error);
+      } finally {
+        formik.setSubmitting(false);
+      }
     },
   });
 

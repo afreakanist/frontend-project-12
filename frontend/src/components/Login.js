@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import useAuth from '../hooks/useAuth';
+import routes from '../utils/routes';
 
 const Login = () => {
   const {
@@ -14,6 +15,7 @@ const Login = () => {
   } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (inputElem.current) {
@@ -37,10 +39,15 @@ const Login = () => {
         .trim()
         .required('form.error.required'),
     }),
-    onSubmit: (values) => {
-      handleLogin(values)
-        .catch((error) => handleError(error, 'login'))
-        .finally(() => formik.setSubmitting(false));
+    onSubmit: async (values) => {
+      try {
+        await handleLogin(values);
+        navigate(routes.mainPage);
+      } catch (error) {
+        handleError(error, 'login');
+      } finally {
+        formik.setSubmitting(false);
+      }
     },
   });
 
