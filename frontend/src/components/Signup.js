@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
@@ -11,9 +11,8 @@ import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
 
 const Signup = () => {
-  const {
-    handleSignup, handleError, requestError, setRequestError,
-  } = useAuth();
+  const [signupError, setSignupError] = useState(null);
+  const { handleSignup } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
   const navigate = useNavigate();
@@ -22,8 +21,6 @@ const Signup = () => {
     if (inputElem.current) {
       inputElem.current.focus();
     }
-
-    return () => setRequestError(null);
   }, []);
 
   const formik = useFormik({
@@ -62,7 +59,8 @@ const Signup = () => {
         await handleSignup(values);
         navigate(routes.mainPage);
       } catch (error) {
-        handleError(error);
+        const { message, statusCode } = error.response.data;
+        setSignupError({ message, statusCode });
       } finally {
         formik.setSubmitting(false);
       }
@@ -70,7 +68,7 @@ const Signup = () => {
   });
 
   const handleChange = (event) => {
-    setRequestError(null);
+    setSignupError(null);
     formik.handleChange(event);
   };
 
@@ -138,7 +136,7 @@ const Signup = () => {
           ) : null}
         </Form.Group>
 
-        { requestError && <div className="mb-3 text-danger text-center">{t(requestError?.key, { ...requestError?.values })}</div>}
+        { signupError && <div className="mb-3 text-danger text-center">{t(`requestError.${signupError?.statusCode}`, signupError)}</div>}
 
         <Button
           type="submit"

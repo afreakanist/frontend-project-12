@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
@@ -10,9 +10,8 @@ import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
 
 const Login = () => {
-  const {
-    handleLogin, handleError, requestError, setRequestError,
-  } = useAuth();
+  const [loginError, setLoginError] = useState(null);
+  const { handleLogin } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
   const navigate = useNavigate();
@@ -21,8 +20,6 @@ const Login = () => {
     if (inputElem.current) {
       inputElem.current.focus();
     }
-
-    return () => setRequestError(null);
   }, []);
 
   const formik = useFormik({
@@ -44,7 +41,8 @@ const Login = () => {
         await handleLogin(values);
         navigate(routes.mainPage);
       } catch (error) {
-        handleError(error, 'login');
+        const { message, statusCode } = error.response.data;
+        setLoginError({ message, statusCode });
       } finally {
         formik.setSubmitting(false);
       }
@@ -52,7 +50,7 @@ const Login = () => {
   });
 
   const handleChange = (event) => {
-    setRequestError(null);
+    setLoginError(null);
     formik.handleChange(event);
   };
 
@@ -100,18 +98,18 @@ const Login = () => {
           ) : null}
         </Form.Group>
 
-        { requestError && <div className="mb-3 text-danger text-center">{t(requestError?.key, { ...requestError?.values })}</div>}
+        { loginError && <div className="mb-3 text-danger text-center">{t(`requestError.${loginError?.statusCode}`, loginError)}</div>}
 
         <Button
           type="submit"
           className="w-100"
           variant={
-            requestError
+            loginError
               || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!requestError || Object.keys(formik.errors).length || formik.isSubmitting}
+          disabled={!!loginError || Object.keys(formik.errors).length || formik.isSubmitting}
         >
           {formik.isSubmitting
             ? (
