@@ -9,20 +9,18 @@ import Modal from './Modal';
 
 const Main = () => {
   const {
-    user, requestError, handleError, buildAuthHeaders,
+    requestError, handleError, buildAuthHeaders,
   } = useAuth();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user?.isLoggedIn) {
-      dispatch(getChatData(buildAuthHeaders()))
-        .unwrap()
-        .catch((error) => {
-          handleError(error, 'getData');
-          toast.error(requestError?.key, requestError?.values);
-        });
-    }
-  }, [user?.isLoggedIn]);
+    dispatch(getChatData(buildAuthHeaders()))
+      .unwrap()
+      .catch((error) => {
+        handleError(error, 'getData');
+        toast.error(requestError?.key, requestError?.values);
+      });
+  }, []);
 
   return (
     <main className="flex-grow-1 overflow-hidden">
