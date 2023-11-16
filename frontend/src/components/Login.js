@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
+import { login } from '../utils/api';
 
 const Login = () => {
   const [loginError, setLoginError] = useState(null);
@@ -36,16 +37,17 @@ const Login = () => {
         .trim()
         .required('form.error.required'),
     }),
-    onSubmit: async (values) => {
-      try {
-        await handleLogin(values);
-        navigate(routes.mainPage);
-      } catch (error) {
-        const { message, statusCode } = error.response.data;
-        setLoginError({ message, statusCode });
-      } finally {
-        formik.setSubmitting(false);
-      }
+    onSubmit: (values) => {
+      login(values)
+        .then((userData) => {
+          handleLogin(userData);
+          navigate(routes.mainPage);
+        })
+        .catch((error) => {
+          const { message, statusCode } = error.response.data;
+          setLoginError({ message, statusCode });
+        })
+        .finally(() => formik.setSubmitting(false));
     },
   });
 

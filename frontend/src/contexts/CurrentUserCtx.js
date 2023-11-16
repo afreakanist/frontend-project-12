@@ -1,7 +1,6 @@
 import {
   createContext, useCallback, useMemo, useState,
 } from 'react';
-import * as api from '../utils/api';
 
 export const CurrentUserCtx = createContext();
 
@@ -16,15 +15,11 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const onAuthSuccess = useCallback(({ token, username }) => {
+  const handleLogin = useCallback(({ token, username }) => {
     setUser({ username, isLoggedIn: true });
     localStorage.setItem('jwt', token);
     localStorage.setItem('username', username);
   }, []);
-
-  const handleSignup = useCallback((userData) => api.signup(userData).then(onAuthSuccess), []);
-
-  const handleLogin = useCallback((userData) => api.login(userData).then(onAuthSuccess), []);
 
   const handleLogout = useCallback(() => {
     setUser(null);
@@ -44,14 +39,12 @@ export const AuthProvider = ({ children }) => {
   const authData = useMemo(() => ({
     user,
     checkToken,
-    handleSignup,
     handleLogin,
     handleLogout,
     buildAuthHeaders,
   }), [
     user,
     checkToken,
-    handleSignup,
     handleLogin,
     handleLogout,
     buildAuthHeaders]);

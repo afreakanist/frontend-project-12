@@ -9,10 +9,11 @@ import * as Yup from 'yup';
 import filter from 'leo-profanity';
 import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
+import { signup } from '../utils/api';
 
 const Signup = () => {
   const [signupError, setSignupError] = useState(null);
-  const { handleSignup } = useAuth();
+  const { handleLogin } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
   const navigate = useNavigate();
@@ -54,16 +55,17 @@ const Signup = () => {
         .required('userForm.error.passwordConfirmationRequired')
         .oneOf([Yup.ref('password'), null], 'userForm.error.passwordConfirmationMatch'),
     }),
-    onSubmit: async (values) => {
-      try {
-        await handleSignup(values);
-        navigate(routes.mainPage);
-      } catch (error) {
-        const { message, statusCode } = error.response.data;
-        setSignupError({ message, statusCode });
-      } finally {
-        formik.setSubmitting(false);
-      }
+    onSubmit: (values) => {
+      signup(values)
+        .then((userData) => {
+          handleLogin(userData);
+          navigate(routes.mainPage);
+        })
+        .catch((error) => {
+          const { message, statusCode } = error.response.data;
+          setSignupError({ message, statusCode });
+        })
+        .finally(() => formik.setSubmitting(false));
     },
   });
 
