@@ -1,4 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getData } from '../utils/api';
+
+export const getChatData = createAsyncThunk(
+  'channels/getChatData',
+  async (headers, { rejectWithValue }) => {
+    try {
+      const payload = await getData(headers);
+      return payload;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  },
+);
 
 const initialState = {
   currentChannelId: 1,
@@ -10,9 +23,6 @@ const channelsSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    setChannels: (state, action) => {
-      state.channels = action.payload;
-    },
     addChannel: (state, action) => {
       state.channels.push(action.payload);
     },
@@ -30,6 +40,11 @@ const channelsSlice = createSlice({
     switchChannel: (state, action) => {
       state.currentChannelId = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getChatData.fulfilled, (state, { payload }) => {
+      state.channels = payload.channels;
+    });
   },
 });
 

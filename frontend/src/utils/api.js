@@ -1,17 +1,14 @@
 import axios from 'axios';
+import routes from './routes';
 
 export const signup = ({ username, password }) => axios
-  .post('/api/v1/signup', { username, password })
+  .post(routes.signup, { username, password })
   .then((response) => response.data);
 
 export const login = ({ username, password }) => axios
-  .post('/api/v1/login', { username, password })
+  .post(routes.login, { username, password })
   .then((response) => response.data);
 
-export const getData = (token) => axios
-  .get('/api/v1/data', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  })
+export const getData = (headers) => axios
+  .get(routes.data, { headers })
   .then((response) => response.data);

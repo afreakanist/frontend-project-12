@@ -1,26 +1,26 @@
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
+import routes from '../utils/routes';
+import { login } from '../utils/api';
 
 const Login = () => {
-  const {
-    handleLogin, handleError, requestError, setRequestError,
-  } = useAuth();
+  const [loginError, setLoginError] = useState(null);
+  const { handleLogin } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (inputElem.current) {
       inputElem.current.focus();
     }
-
-    return () => setRequestError(null);
   }, []);
 
   const formik = useFormik({
@@ -38,14 +38,21 @@ const Login = () => {
         .required('form.error.required'),
     }),
     onSubmit: (values) => {
-      handleLogin(values)
-        .catch((error) => handleError(error, 'login'))
+      login(values)
+        .then((userData) => {
+          handleLogin(userData);
+          navigate(routes.mainPage);
+        })
+        .catch((error) => {
+          const { message, statusCode } = error.response.data;
+          setLoginError({ message, statusCode });
+        })
         .finally(() => formik.setSubmitting(false));
     },
   });
 
   const handleChange = (event) => {
-    setRequestError(null);
+    setLoginError(null);
     formik.handleChange(event);
   };
 
@@ -93,18 +100,18 @@ const Login = () => {
           ) : null}
         </Form.Group>
 
-        { requestError && <div className="mb-3 text-danger text-center">{t(requestError?.key, { ...requestError?.values })}</div>}
+        { loginError && <div className="mb-3 text-danger text-center">{t(`requestError.${loginError?.statusCode}`, loginError)}</div>}
 
         <Button
           type="submit"
           className="w-100"
           variant={
-            requestError
+            loginError
               || (Object.keys(formik.touched).length && Object.keys(formik.errors).length)
               ? 'secondary'
               : 'primary'
           }
-          disabled={!!requestError || Object.keys(formik.errors).length || formik.isSubmitting}
+          disabled={!!loginError || Object.keys(formik.errors).length || formik.isSubmitting}
         >
           {formik.isSubmitting
             ? (

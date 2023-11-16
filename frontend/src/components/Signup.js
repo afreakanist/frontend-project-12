@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -7,21 +7,21 @@ import Spinner from 'react-bootstrap/Spinner';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import filter from 'leo-profanity';
-import { useAuth } from '../hooks/useAuth';
+import useAuth from '../hooks/useAuth';
+import routes from '../utils/routes';
+import { signup } from '../utils/api';
 
 const Signup = () => {
-  const {
-    handleSignup, handleError, requestError, setRequestError,
-  } = useAuth();
+  const [signupError, setSignupError] = useState(null);
+  const { handleLogin } = useAuth();
   const { t } = useTranslation();
   const inputElem = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (inputElem.current) {
       inputElem.current.focus();
     }
-
-    return () => setRequestError(null);
   }, []);
 
   const formik = useFormik({
@@ -56,14 +56,21 @@ const Signup = () => {
         .oneOf([Yup.ref('password'), null], 'userForm.error.passwordConfirmationMatch'),
     }),
     onSubmit: (values) => {
-      handleSignup(values)
-        .catch((error) => handleError(error))
+      signup(values)
+        .then((userData) => {
+          handleLogin(userData);
+          navigate(routes.mainPage);
+        })
+        .catch((error) => {
+          const { message, statusCode } = error.response.data;
+          setSignupError({ message, statusCode });
+        })
         .finally(() => formik.setSubmitting(false));
     },
   });
 
   const handleChange = (event) => {
-    setRequestError(null);
+    setSignupError(null);
     formik.handleChange(event);
   };
 
@@ -131,7 +138,7 @@ const Signup = () => {
           ) : null}
         </Form.Group>
 
-        { requestError && <div className="mb-3 text-danger text-center">{t(requestError?.key, { ...requestError?.values })}</div>}
+        { signupError && <div className="mb-3 text-danger text-center">{t(`requestError.${signupError?.statusCode}`, signupError)}</div>}
 
         <Button
           type="submit"

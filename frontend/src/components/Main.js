@@ -1,41 +1,31 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useAuth } from '../hooks/useAuth';
-import { getData } from '../utils/api';
-import { actions as channelsActions } from '../slices/channelsSlice';
-import { actions as messagesActions } from '../slices/messagesSlice';
+import useAuth from '../hooks/useAuth';
+import { getChatData } from '../slices/channelsSlice';
 import ChannelView from './ChannelView';
 import Sidebar from './Sidebar';
 import Modal from './Modal';
+import routes from '../utils/routes';
 
 const Main = () => {
-  const {
-    user, requestError, setRequestError, handleError,
-  } = useAuth();
+  const { buildAuthHeaders, handleLogout } = useAuth();
   const dispatch = useDispatch();
-
-  const getChatData = () => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      getData(token)
-        .then(({ channels, messages }) => {
-          setRequestError(null);
-          dispatch(channelsActions.setChannels(channels));
-          dispatch(messagesActions.setMessages(messages));
-        })
-        .catch((error) => {
-          handleError(error, 'getData');
-          toast.error(requestError?.key, requestError?.values);
-        });
-    }
-  };
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (user?.isLoggedIn) {
-      getChatData();
-    }
-  }, [user?.isLoggedIn]);
+    dispatch(getChatData(buildAuthHeaders()))
+      .unwrap()
+      .catch((error) => {
+        handleLogout();
+        const { message, statusCode } = error.response.data;
+        toast.error(t('toast.error.getChatData', { message, statusCode }));
+        navigate(routes.loginPage);
+      });
+  }, []);
 
   return (
     <main className="flex-grow-1 overflow-hidden">
