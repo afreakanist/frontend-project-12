@@ -8,6 +8,7 @@ import Login from './components/Login';
 import Main from './components/Main';
 import NotFound from './components/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import RedirectLoggedIn from './components/RedirectLoggedIn';
 import Signup from './components/Signup';
 
 const App = () => {
@@ -22,8 +23,8 @@ const App = () => {
       <Header />
       <Routes>
         <Route path={routes.mainPage} element={<ProtectedRoute><Main /></ProtectedRoute>} />
-        <Route path={routes.loginPage} element={<Login />} />
-        <Route path={routes.signupPage} element={<Signup />} />
+        <Route path={routes.loginPage} element={<RedirectLoggedIn><Login /></RedirectLoggedIn>} />
+        <Route path={routes.signupPage} element={<RedirectLoggedIn><Signup /></RedirectLoggedIn>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer position="top-right" />

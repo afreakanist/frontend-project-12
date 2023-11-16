@@ -1,26 +1,18 @@
 import {
   createContext, useCallback, useMemo, useState,
 } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
 import * as api from '../utils/api';
 
 export const CurrentUserCtx = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const checkToken = useCallback(() => {
     const token = localStorage.getItem('jwt');
     if (token) {
       const username = localStorage.getItem('username');
       setUser({ username, isLoggedIn: true });
-      if (location.pathname === '/login') {
-        navigate('/');
-      } else {
-        navigate(location.pathname);
-      }
     }
   }, []);
 
