@@ -1,7 +1,6 @@
 export default {
   translation: {
     'requestError.401': '{{message}} ({{statusCode}}): Username or password is incorrect',
-    'requestError.401.getData': '{{message}} ({{statusCode}}): Authentification required',
     'requestError.409': '{{message}} ({{statusCode}}): This username is already taken',
     'requestError.500': '{{message}} ({{statusCode}}): Something went wrong...',
     'form.error.required': 'This field is required',
@@ -54,6 +53,6 @@ export default {
     'toast.error.newChannel': 'Failed to create new channel: {{error}}',
     'toast.error.renameChannel': 'Failed to rename channel: {{error}}',
     'toast.error.removeChannel': 'Failed to remove channel: {{error}}',
-    'toast.error.getData': 'Failed to fetch chat data: {{error}}',
+    'toast.error.getChatData': 'Failed to fetch chat data: {{message}} ({{statusCode}})',
   },
 };
