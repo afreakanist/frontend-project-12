@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 import { ReactComponent as SelectLanguageIcon } from '../assets/select-language.svg';
 import useAuth from '../hooks/useAuth';
+import routes from '../utils/routes';
 
 const Header = () => {
   const { user, handleLogout } = useAuth();
@@ -19,7 +20,7 @@ const Header = () => {
     <header className="header w-100 border-bottom">
       <Navbar className="bg-body-tertiary">
         <Container>
-          <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
+          <Navbar.Brand href={routes.mainPage}>Hexlet Chat</Navbar.Brand>
           <Navbar.Collapse>
             <Dropdown>
               <Dropdown.Toggle variant="light" id="select-lng" className="rounded p-1 ms-2">
