@@ -1,32 +1,30 @@
-import {
-  createContext, useCallback, useMemo, useState,
-} from 'react';
+import { createContext, useMemo, useState } from 'react';
 
 export const CurrentUserCtx = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  const checkToken = useCallback(() => {
+  const checkToken = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
       const username = localStorage.getItem('username');
       setUser({ username, isLoggedIn: true });
     }
-  }, []);
+  };
 
-  const handleLogin = useCallback(({ token, username }) => {
+  const handleLogin = ({ token, username }) => {
     setUser({ username, isLoggedIn: true });
     localStorage.setItem('jwt', token);
     localStorage.setItem('username', username);
-  }, []);
+  };
 
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     setUser(null);
     localStorage.clear();
-  }, []);
+  };
 
-  const buildAuthHeaders = useCallback(() => {
+  const buildAuthHeaders = () => {
     const token = localStorage.getItem('jwt');
     if (token) {
       return {
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       };
     }
     return null;
-  }, []);
+  };
 
   const authData = useMemo(() => ({
     user,
