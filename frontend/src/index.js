@@ -11,6 +11,7 @@ import { ApiProvider } from './contexts/ChatCtx';
 import { AuthProvider } from './contexts/CurrentUserCtx';
 import App from './App';
 import store from './slices/index';
+import chatApi from './utils/chatApi';
 import en from './locales/en';
 import ru from './locales/ru';
 
@@ -46,7 +47,7 @@ const app = async () => {
           <Provider store={store}>
             <BrowserRouter>
               <AuthProvider>
-                <ApiProvider>
+                <ApiProvider value={chatApi}>
                   <App />
                 </ApiProvider>
               </AuthProvider>
