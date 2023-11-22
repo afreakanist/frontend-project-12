@@ -9,7 +9,7 @@ import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
 
 const Header = () => {
-  const { user, handleLogout } = useAuth();
+  const { isLoggedIn, handleLogout } = useAuth();
   const { t, i18n } = useTranslation();
 
   const handleLngChange = (lng) => {
@@ -44,7 +44,7 @@ const Header = () => {
               </Dropdown.Menu>
             </Dropdown>
           </Navbar.Collapse>
-          {user?.isLoggedIn
+          {isLoggedIn
             ? <Button onClick={handleLogout}>{t('header.logOutBtn')}</Button>
             : null}
         </Container>
