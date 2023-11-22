@@ -1,50 +1,43 @@
-import {
-  createContext, useCallback, useMemo, useState,
-} from 'react';
+import { createContext, useMemo, useState } from 'react';
 
 export const CurrentUserCtx = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const storedUser = JSON.parse(localStorage.getItem('user'));
+  const [user, setUser] = useState(storedUser);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!storedUser);
 
-  const checkToken = useCallback(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      const username = localStorage.getItem('username');
-      setUser({ username, isLoggedIn: true });
-    }
-  }, []);
+  const handleLogin = (userData) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+    localStorage.setItem('user', JSON.stringify(userData));
+  };
 
-  const handleLogin = useCallback(({ token, username }) => {
-    setUser({ username, isLoggedIn: true });
-    localStorage.setItem('jwt', token);
-    localStorage.setItem('username', username);
-  }, []);
-
-  const handleLogout = useCallback(() => {
+  const handleLogout = () => {
     setUser(null);
+    setIsLoggedIn(false);
     localStorage.clear();
-  }, []);
+  };
 
-  const buildAuthHeaders = useCallback(() => {
-    const token = localStorage.getItem('jwt');
+  const buildAuthHeaders = () => {
+    const { token } = JSON.parse(localStorage.getItem('user'));
     if (token) {
       return {
         Authorization: `Bearer ${token}`,
       };
     }
     return null;
-  }, []);
+  };
 
   const authData = useMemo(() => ({
     user,
-    checkToken,
+    isLoggedIn,
     handleLogin,
     handleLogout,
     buildAuthHeaders,
   }), [
     user,
-    checkToken,
+    isLoggedIn,
     handleLogin,
     handleLogout,
     buildAuthHeaders]);

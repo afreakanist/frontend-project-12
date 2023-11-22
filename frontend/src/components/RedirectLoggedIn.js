@@ -3,9 +3,9 @@ import useAuth from '../hooks/useAuth';
 import routes from '../utils/routes';
 
 const RedirectLoggedIn = ({ children }) => {
-  const { user } = useAuth();
+  const { isLoggedIn } = useAuth();
 
-  return user?.isLoggedIn ? <Navigate to={routes.mainPage} replace /> : children;
+  return isLoggedIn ? <Navigate to={routes.mainPage} replace /> : children;
 };
 
 export default RedirectLoggedIn;

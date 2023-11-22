@@ -7,10 +7,11 @@ import i18n from 'i18next';
 import filter from 'leo-profanity';
 
 import './index.css';
-import { ChatProvider } from './contexts/ChatCtx';
+import { ApiProvider } from './contexts/ChatCtx';
 import { AuthProvider } from './contexts/CurrentUserCtx';
 import App from './App';
 import store from './slices/index';
+import chatApi from './utils/chatApi';
 import en from './locales/en';
 import ru from './locales/ru';
 
@@ -46,9 +47,9 @@ const app = async () => {
           <Provider store={store}>
             <BrowserRouter>
               <AuthProvider>
-                <ChatProvider>
+                <ApiProvider value={chatApi}>
                   <App />
-                </ChatProvider>
+                </ApiProvider>
               </AuthProvider>
             </BrowserRouter>
           </Provider>
